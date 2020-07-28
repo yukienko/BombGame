@@ -7,11 +7,14 @@ public class TapEffect : MonoBehaviour
     [SerializeField] Camera _camera;                        // カメラの座標
     TouchManager _touchManager;
     TouchManager old_phase;
+    bool isMove;
+    GameObject hitobject;
 
     private void Start()
     {
         _touchManager = new TouchManager();
         old_phase = new TouchManager();
+        isMove = false;
     }
 
     void Update()
@@ -19,7 +22,6 @@ public class TapEffect : MonoBehaviour
         //タッチ情報更新
         _touchManager.update();
         _touchManager.GetTouch();
-
         if (_touchManager._touch_flag)
         {
             if (Application.isEditor)
@@ -42,12 +44,21 @@ public class TapEffect : MonoBehaviour
                     Debug.DrawRay(ray.origin, ray.direction * distance, Color.red, duration, false);
                     RaycastHit hit = new RaycastHit();
                     //ヒットボックスの存在するオブジェクトにRayが衝突したときの処理
-                    if(Physics.Raycast(ray, out hit, distance))
+                    if (Physics.Raycast(ray, out hit, distance))
                     {
-                        GameObject hitobject = hit.collider.gameObject;
+                        isMove = true;
+                        hitobject = hit.collider.gameObject;
+                    }
+                    //クリックし続けてるなら
+                    if (isMove)
+                    {
                         pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 20);
                         hitobject.transform.position = pos;
                     }
+                }
+                else if(_touchManager._touch_phase == TouchPhase.Ended)
+                {
+                    isMove = false;
                 }
             }
             else
@@ -70,13 +81,6 @@ public class TapEffect : MonoBehaviour
                     float distance = 100; // 飛ばす&表示するRayの長さ
                     Ray ray = Camera.main.ScreenPointToRay(vPoint);
                     RaycastHit hit = new RaycastHit();
-                    //ヒットボックス(HitBox3Dのみ、2Dには対応してないので別の書き方をする)の存在するオブジェクトにRayが衝突したときの処理^0^
-                    if (Physics.Raycast(ray, out hit, distance))
-                    {
-                        GameObject hitobject = hit.collider.gameObject;
-                        pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 20);
-                        hitobject.transform.position = pos;
-                    }
                 }
                 //クリック長押し中（クリックした瞬間の次フレームから離すまでの間）
                 else if(_touchManager._touch_phase == TouchPhase.Moved)
@@ -84,11 +88,21 @@ public class TapEffect : MonoBehaviour
                     float distance = 100; // 飛ばす&表示するRayの長さ
                     Ray ray = Camera.main.ScreenPointToRay(vPoint);
                     RaycastHit hit = new RaycastHit();
+                    //ヒットボックス(HitBox3Dのみ、2Dには対応してないので別の書き方をする)の存在するオブジェクトにRayが衝突したときの処理^0^
                     if (Physics.Raycast(ray, out hit, distance))
                     {
-                        GameObject hitobject = hit.collider.gameObject;
-                        pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 20);
+                        isMove = true;
+                        hitobject = hit.collider.gameObject;
+                    }
+                    //クリックし続けてるなら
+                    if (isMove)
+                    {
+                        pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 20);
                         hitobject.transform.position = pos;
+                    }
+                    else if (_touchManager._touch_phase == TouchPhase.Ended)
+                    {
+                        isMove = false;
                     }
                 }
             }
