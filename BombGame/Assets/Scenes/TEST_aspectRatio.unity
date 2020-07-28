@@ -5120,15 +5120,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.06308851
-    y: 0
-    width: 0.873823
-    height: 1
+    x: 0
+    y: 0.2717262
+    width: 1
+    height: 0.45654762
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 6.1797414
+  orthographic size: 5.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6030,7 +6030,7 @@ RectTransform:
   m_GameObject: {fileID: 1977891690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.34907407, y: 0.34907407, z: 0.34907407}
+  m_LocalScale: {x: 0.39947915, y: 0.39947915, z: 0.39947915}
   m_Children:
   - {fileID: 1036023179}
   - {fileID: 830989704}
@@ -6042,7 +6042,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.5}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 1920.0001, y: 1080.0001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1977891692
 MonoBehaviour:
