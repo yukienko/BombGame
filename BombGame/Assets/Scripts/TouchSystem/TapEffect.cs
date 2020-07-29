@@ -76,11 +76,6 @@ public class TapEffect : MonoBehaviour
                     pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 10);
                     tapEffect.transform.position = pos;
                     tapEffect.Emit(1);
-
-
-                    float distance = 100; // 飛ばす&表示するRayの長さ
-                    Ray ray = Camera.main.ScreenPointToRay(vPoint);
-                    RaycastHit hit = new RaycastHit();
                 }
                 //クリック長押し中（クリックした瞬間の次フレームから離すまでの間）
                 else if(_touchManager._touch_phase == TouchPhase.Moved)
