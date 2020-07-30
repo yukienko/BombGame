@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class BombBase : MonoBehaviour
 {
     public ENEMYCOLOR enemyColor;
     public enum ENEMYCOLOR
