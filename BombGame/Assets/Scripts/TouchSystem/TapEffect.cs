@@ -3,18 +3,25 @@ using UnityEngine;
 
 public class TapEffect : MonoBehaviour
 {
-    [SerializeField] ParticleSystem tapEffect = default;              // タップエフェクト
+    //[SerializeField] ParticleSystem tapEffect = default;              // タップエフェクト
     [SerializeField] Camera _camera = default;                        // カメラの座標
     TouchManager _touchManager;
     TouchManager old_phase;
     bool isMove;
     GameObject hitobject;
 
+    Vector3 gameTopRight;
+    Vector3 gameBottomLeft;
+
+
     private void Start()
     {
         _touchManager = new TouchManager();
         old_phase = new TouchManager();
         isMove = false;
+        gameTopRight = Camera.main.ViewportToWorldPoint(new Vector3(0.95f, 1.0f, 0.0f));
+        gameBottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0.05f, 0.0f, 0.0f));
+        Debug.Log(gameTopRight.x + "," + gameBottomLeft.x + "," + Camera.main.ViewportToWorldPoint(new Vector3(1920,1,0)));
     }
 
     void Update()
@@ -33,8 +40,8 @@ public class TapEffect : MonoBehaviour
                 {
                     // マウスのワールド座標までパーティクルを移動し、パーティクルエフェクトを1つ生成する
                     pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 10);
-                    tapEffect.transform.position = pos;
-                    tapEffect.Emit(1);
+                    //tapEffect.transform.position = pos;
+                    //tapEffect.Emit(1);
                 }
                 else if (_touchManager._touch_phase == TouchPhase.Moved)
                 {
@@ -53,6 +60,8 @@ public class TapEffect : MonoBehaviour
                     if (isMove)
                     {
                         pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 20);
+                        if (pos.x > gameTopRight.x || pos.x < gameBottomLeft.x)
+                            return;
                         hitobject.transform.position = pos;
                     }
                 }
@@ -74,8 +83,8 @@ public class TapEffect : MonoBehaviour
                 {
                     // タップのワールド座標までパーティクルを移動し、パーティクルエフェクトを1つ生成する
                     pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 10);
-                    tapEffect.transform.position = pos;
-                    tapEffect.Emit(1);
+                    //tapEffect.transform.position = pos;
+                    //tapEffect.Emit(1);
 
                 }
                 //クリック長押し中（クリックした瞬間の次フレームから離すまでの間）
@@ -94,6 +103,8 @@ public class TapEffect : MonoBehaviour
                     if (isMove)
                     {
                         pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 10);
+                        if (pos.x > gameTopRight.x || pos.x < gameBottomLeft.x)
+                            return;
                         hitobject.transform.position = pos;
                     }
                     else if (_touchManager._touch_phase == TouchPhase.Ended)
