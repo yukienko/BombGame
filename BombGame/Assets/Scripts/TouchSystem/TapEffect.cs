@@ -1,4 +1,4 @@
-﻿using StateManager;
+using StateManager;
 using UnityEngine;
 
 public class TapEffect : MonoBehaviour
@@ -9,19 +9,22 @@ public class TapEffect : MonoBehaviour
     TouchManager old_phase;
     bool isMove;
     GameObject hitobject;
+    Vector3 oldPos;
 
-    Vector3 gameTopRight;
-    Vector3 gameBottomLeft;
-
+    float gameTopRight;
+    float gameBottomLeft;
+    float gameTop;
+    float gameButtom;
 
     private void Start()
     {
         _touchManager = new TouchManager();
         old_phase = new TouchManager();
         isMove = false;
-        gameTopRight = Camera.main.ViewportToWorldPoint(new Vector3(0.95f, 1.0f, 0.0f));
-        gameBottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0.05f, 0.0f, 0.0f));
-        Debug.Log(gameTopRight.x + "," + gameBottomLeft.x + "," + Camera.main.ViewportToWorldPoint(new Vector3(1920,1,0)));
+        gameTopRight = 1920 - 1920 / 20;
+        gameBottomLeft = 1920f / 20f;
+        gameTop = 1080 - 1080 / 15;
+        gameButtom = 0;
     }
 
     void Update()
@@ -34,7 +37,7 @@ public class TapEffect : MonoBehaviour
             if (Application.isEditor)
             {
                 // 座標系変換
-                Vector3 pos;
+                Vector3 pos = default;
                 Vector3 world_point = Camera.main.ScreenToWorldPoint(_touchManager._touch_position);
                 if (old_phase._touch_phase == TouchPhase.Began)
                 {
@@ -59,9 +62,21 @@ public class TapEffect : MonoBehaviour
                     //クリックし続けてるなら
                     if (isMove)
                     {
+                        //pos                :unity.transform.positionの座標
+                        //Input.mousePosition:1920x1080のクリックした座標
                         pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 20);
-                        if (pos.x > gameTopRight.x || pos.x < gameBottomLeft.x)
-                            return;
+                        if (_touchManager._touch_position.x < gameBottomLeft || _touchManager._touch_position.x > gameTopRight)
+                        {
+                            Debug.Log("範囲外 : " + "," + _touchManager._touch_position + "," + pos);
+                            pos = new Vector3(oldPos.x, pos.y, pos.z);
+                            //return;
+                        }
+                        if (_touchManager._touch_position.y > gameTop || _touchManager._touch_position.y < gameButtom)
+                        {
+                            Debug.Log("範囲外 : " + "," + _touchManager._touch_position + "," + pos);
+                            pos = new Vector3(pos.x, oldPos.y, pos.z);
+                           // return;
+                        }
                         hitobject.transform.position = pos;
                     }
                 }
@@ -69,6 +84,7 @@ public class TapEffect : MonoBehaviour
                 {
                     isMove = false;
                 }
+                oldPos = pos;
             }
             else
             {
@@ -103,7 +119,7 @@ public class TapEffect : MonoBehaviour
                     if (isMove)
                     {
                         pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 10);
-                        if (pos.x > gameTopRight.x || pos.x < gameBottomLeft.x)
+                        if (pos.x < gameBottomLeft || pos.x > gameTopRight || pos.y > gameTop)
                             return;
                         hitobject.transform.position = pos;
                     }
@@ -116,5 +132,7 @@ public class TapEffect : MonoBehaviour
         }
         //oldの更新
         old_phase._touch_phase = _touchManager._touch_phase;
+
+        Debug.Log(_touchManager._touch_position);
     }
 }
