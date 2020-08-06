@@ -26,7 +26,6 @@ public class BombAnimation : MonoBehaviour
         if (isCatch)
         {
             animator.SetBool("Catch", true);
-            Debug.Log("hoge");
         }
         else
         {

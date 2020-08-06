@@ -28,6 +28,7 @@ public class TapEffect : MonoBehaviour
         gameTop = 1080 - 1080 / 15;
         gameButtom = 0;
         isCatch = false;
+        hitobject = default;
     }
 
     void Update()
@@ -135,7 +136,8 @@ public class TapEffect : MonoBehaviour
             //oldの更新
             old_phase._touch_phase = _touchManager._touch_phase;
 
-            Catch(hitobject);
+            if (hitobject != default)
+                Catch(hitobject);
         }
     }
 
