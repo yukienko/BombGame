@@ -7,7 +7,7 @@ public class TapEffect : MonoBehaviour
     [SerializeField] Camera _camera = default;                        // カメラの座標
     TouchManager _touchManager;
     TouchManager old_phase;
-    bool isMove;
+    public bool isMove;
     GameObject hitobject;
     Vector3 oldPos;
 
@@ -15,6 +15,8 @@ public class TapEffect : MonoBehaviour
     float gameBottomLeft;
     float gameTop;
     float gameButtom;
+
+    public bool isCatch;
 
     private void Start()
     {
@@ -25,6 +27,7 @@ public class TapEffect : MonoBehaviour
         gameBottomLeft = 1920f / 20f;
         gameTop = 1080 - 1080 / 15;
         gameButtom = 0;
+        isCatch = false;
     }
 
     void Update()
@@ -72,12 +75,12 @@ public class TapEffect : MonoBehaviour
                         {
                             Debug.Log("範囲外 : " + "," + _touchManager._touch_position + "," + pos);
                             pos = new Vector3(pos.x, oldPos.y, pos.z);
-                           // return;
+                            // return;
                         }
                         hitobject.transform.position = pos;
                     }
                 }
-                else if(_touchManager._touch_phase == TouchPhase.Ended)
+                else if (_touchManager._touch_phase == TouchPhase.Ended)
                 {
                     isMove = false;
                 }
@@ -97,7 +100,7 @@ public class TapEffect : MonoBehaviour
                     pos = _camera.ScreenToWorldPoint(vPoint + _camera.transform.forward * 10);
                 }
                 //クリック長押し中（クリックした瞬間の次フレームから離すまでの間）
-                else if(_touchManager._touch_phase == TouchPhase.Moved)
+                else if (_touchManager._touch_phase == TouchPhase.Moved)
                 {
                     float distance = 100; // 飛ばす&表示するRayの長さ
                     Ray ray = Camera.main.ScreenPointToRay(vPoint);
@@ -129,8 +132,24 @@ public class TapEffect : MonoBehaviour
                 }
                 oldPos = pos;
             }
+            //oldの更新
+            old_phase._touch_phase = _touchManager._touch_phase;
+
+            Catch(hitobject);
         }
-        //oldの更新
-        old_phase._touch_phase = _touchManager._touch_phase;
+    }
+
+    void Catch(GameObject hitBomb)
+    {
+        BombAnimation bombAnimation = hitBomb.GetComponent<BombAnimation>();
+        if (isMove)
+        {
+            bombAnimation.isCatch = true;
+        }
+        else
+        {
+            bombAnimation.isCatch = false;
+        }
+        bombAnimation.Catch();
     }
 }
