@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StaticManager;
 
 [ExecuteInEditMode()]
 [RequireComponent(typeof(Camera))]
@@ -8,8 +9,8 @@ public class CameraStableAspect : MonoBehaviour
 {
     Camera refCamera;
 
-    private readonly float width = StaticData.Resolution.x;
-    private readonly float height = StaticData.Resolution.y;
+    private readonly float width = ResolutionData.Resolution.x;
+    private readonly float height = ResolutionData.Resolution.y;
 
     [SerializeField]
     float pixelPerUnit = 100f;

@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StaticManager;
 
 [ExecuteInEditMode()]
 public class RectScalerWithViewport : MonoBehaviour
 {
     private RectTransform refRect = null;
 
-    Vector2 referenceResolution = StaticData.Resolution;
+    Vector2 referenceResolution = ResolutionData.Resolution;
 
     [Range(0, 1)]
     [SerializeField] float matchWidthOrHeight = 0;
