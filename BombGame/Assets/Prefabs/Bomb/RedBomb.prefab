@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6566294579101144447}
   - component: {fileID: 1990871914}
   - component: {fileID: 181973460485745537}
-  - component: {fileID: 3937723623751026059}
   m_Layer: 0
   m_Name: RedBomb
   m_TagString: Untagged
@@ -130,19 +129,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc9e7accf2e4b54d946b5f1db86e5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
   enemyColor: 1
---- !u!114 &3937723623751026059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5296652922636919584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ef1e176d7638f8478e4c1a1d9e4cb81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  isCatch: 0

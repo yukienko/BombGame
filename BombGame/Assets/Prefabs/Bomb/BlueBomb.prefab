@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2440837059484697582}
   - component: {fileID: 4071480391716568858}
   - component: {fileID: 8681195823244606736}
-  - component: {fileID: 6429670706471408718}
   m_Layer: 0
   m_Name: BlueBomb
   m_TagString: Untagged
@@ -130,19 +129,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc9e7accf2e4b54d946b5f1db86e5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
   enemyColor: 2
---- !u!114 &6429670706471408718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3710631548968154545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ef1e176d7638f8478e4c1a1d9e4cb81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  isCatch: 0
