@@ -6,14 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class CameraStableAspect : MonoBehaviour
 {
-    [SerializeField]
     Camera refCamera;
 
-    [SerializeField]
-    int width = 1920;
-
-    [SerializeField]
-    int height = 1080;
+    private readonly float width = StaticData.Resolution.x;
+    private readonly float height = StaticData.Resolution.y;
 
     [SerializeField]
     float pixelPerUnit = 100f;
@@ -47,10 +43,10 @@ public class CameraStableAspect : MonoBehaviour
 
     void UpdateCamera()
     {
-        float screen_w = (float)Screen.width;
-        float screen_h = (float)Screen.height;
-        float target_w = (float)width;
-        float target_h = (float)height;
+        float screen_w = Screen.width;
+        float screen_h = Screen.height;
+        float target_w = width;
+        float target_h = height;
 
         //アスペクト比
         float aspect = screen_w / screen_h;
