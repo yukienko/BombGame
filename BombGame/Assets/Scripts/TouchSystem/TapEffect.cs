@@ -8,7 +8,7 @@ public class TapEffect : MonoBehaviour
     TouchManager _touchManager;
     TouchManager old_phase;
     public bool isMove;
-    GameObject hitobject;
+    BombBase bombBase;
     Vector3 oldPos;
 
     float gameTopRight;
@@ -28,6 +28,7 @@ public class TapEffect : MonoBehaviour
         gameTop = 1080 - 1080 / 15;
         gameButtom = 0;
         isCatch = false;
+        bombBase = default;
     }
 
     void Update()
@@ -57,14 +58,14 @@ public class TapEffect : MonoBehaviour
                     if (Physics.Raycast(ray, out hit, distance))
                     {
                         isMove = true;
-                        hitobject = hit.collider.gameObject;
+                        bombBase = hit.collider.gameObject.GetComponent<BombBase>();
                     }
                     //クリックし続けてるなら
                     if (isMove)
                     {
                         //pos                :unity.transform.positionの座標
                         //Input.mousePosition:1920x1080のクリックした座標
-                        pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 20);
+                        pos = _camera.ScreenToWorldPoint(Input.mousePosition + _camera.transform.forward * 10);
                         if (_touchManager._touch_position.x < gameBottomLeft || _touchManager._touch_position.x > gameTopRight)
                         {
                             Debug.Log("範囲外 : " + "," + _touchManager._touch_position + "," + pos);
@@ -77,7 +78,7 @@ public class TapEffect : MonoBehaviour
                             pos = new Vector3(pos.x, oldPos.y, pos.z);
                             // return;
                         }
-                        hitobject.transform.position = pos;
+                        bombBase.transform.position = pos;
                     }
                 }
                 else if (_touchManager._touch_phase == TouchPhase.Ended)
@@ -109,7 +110,7 @@ public class TapEffect : MonoBehaviour
                     if (Physics.Raycast(ray, out hit, distance))
                     {
                         isMove = true;
-                        hitobject = hit.collider.gameObject;
+                        bombBase = hit.collider.gameObject.GetComponent<BombBase>();
                     }
                     //クリックし続けてるなら
                     if (isMove)
@@ -123,7 +124,7 @@ public class TapEffect : MonoBehaviour
                         {
                             pos = new Vector3(pos.x, oldPos.y, pos.z);
                         }
-                        hitobject.transform.position = pos;
+                        bombBase.transform.position = pos;
                     }
                 }
                 else if (_touchManager._touch_phase == TouchPhase.Ended)
@@ -135,21 +136,10 @@ public class TapEffect : MonoBehaviour
             //oldの更新
             old_phase._touch_phase = _touchManager._touch_phase;
 
-            Catch(hitobject);
+            if (bombBase != default)
+            {
+                bombBase.Catch(isMove);
+            }
         }
-    }
-
-    void Catch(GameObject hitBomb)
-    {
-        BombAnimation bombAnimation = hitBomb.GetComponent<BombAnimation>();
-        if (isMove)
-        {
-            bombAnimation.isCatch = true;
-        }
-        else
-        {
-            bombAnimation.isCatch = false;
-        }
-        bombAnimation.Catch();
     }
 }
