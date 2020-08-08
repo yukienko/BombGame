@@ -5,11 +5,9 @@ using UnityEngine;
 [ExecuteInEditMode()]
 public class RectScalerWithViewport : MonoBehaviour
 {
-    [SerializeField]
-    RectTransform refRect = null;
+    private RectTransform refRect = null;
 
-    [SerializeField]
-    Vector2 referenceResolution = new Vector2(1920, 1080);
+    Vector2 referenceResolution = StaticData.Resolution;
 
     [Range(0, 1)]
     [SerializeField] float matchWidthOrHeight = 0;
@@ -21,10 +19,6 @@ public class RectScalerWithViewport : MonoBehaviour
 
     private void Awake()
     {
-        if (refRect == null)
-        {
-            refRect = GetComponent<RectTransform>();
-        }
         UpdateRect();
     }
 
@@ -50,8 +44,18 @@ public class RectScalerWithViewport : MonoBehaviour
         UpdateRect();
     }
 
+    private void Init()
+    {
+        if (refRect == null)
+        {
+            refRect = GetComponent<RectTransform>();
+        }
+        refRect.localPosition = Vector3.zero;
+    }
+
     void UpdateRect()
     {
+        Init();
         Camera cam = Camera.main;
         float width = cam.rect.width * Screen.width;
         float height = cam.rect.height * Screen.height;
