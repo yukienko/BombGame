@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
+    protected virtual bool dontDestroy { get; } = false;
     public static T Instance
     {
         get
@@ -28,6 +29,11 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 
     private void Awake()
     {
+        if (dontDestroy)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         if (this != Instance)
         {
             Destroy(this);
