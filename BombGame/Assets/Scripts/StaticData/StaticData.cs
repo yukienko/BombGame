@@ -17,9 +17,9 @@ namespace StaticManager
         //画面解像度　↓を有効化したらプロジェクトぶっ壊れます
         //public static readonly Vector2 OverallResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
         //ボタン部分のＵＩの比率(100分率)
-        public static readonly float SideUIRect = 0.05f;
+        public static readonly float SideUIRect = 0.1f;
         //スコア部分のUIの比率
-        public static readonly float UpperUIRect = 0.05f;
+        public static readonly float UpperUIRect = 0.1f;
     }
 
     public class GameRect

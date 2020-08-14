@@ -89,10 +89,6 @@ public class TouchSystem : MonoBehaviour
         old_phase._touch_phase = _touchManager._touch_phase;
     }
 
-    void BombAnimationChatch()
-    {
-            bombBase.Catch(isMove);
-    }
 
     float EachPixel(int mode)
     {
@@ -126,7 +122,7 @@ public class TouchSystem : MonoBehaviour
     int CheckUIRect(int mode)
     {
         //Debug.Log(EachPixel(1) + "," + EachPixel(2) + "," + EachPixel(5));
-        //Debug.Log(GameFieldPixel.x + "," + ResolutionData.GameSceneResolution.x + "," + EachPixel(5));
+        Debug.Log(GameFieldPixel.x + "," + ResolutionData.GameSceneResolution.x + "," + EachPixel(5));
         text.text = ResolutionData.GameSceneResolution.x + "," + ResolutionData.GameSceneResolution.y;
         //横
         if (mode == 0)
@@ -139,7 +135,7 @@ public class TouchSystem : MonoBehaviour
         //縦
         else
         {
-            if (AlmightyTapPosition().y < EachPixel(3) + EachPixel(6))
+            if (AlmightyTapPosition().y < EachPixel(3))
                 return 3;
             if (AlmightyTapPosition().y > EachPixel(4) - EachPixel(6))
                 return 4;
@@ -150,11 +146,11 @@ public class TouchSystem : MonoBehaviour
     //
     float HorizontalPixelCalc()
     {
-        //画面解像度
+        //モニター,画面解像度
         Vector2 OverallResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
         float ret = 0;
         //横が長い
-        if (OverallResolution.x > OverallResolution.y)
+        if (OverallResolution.x / ResolutionData.ResolutionRect.x > OverallResolution.y / ResolutionData.ResolutionRect.y)
         {
             //16:9=？:Y
             float xRect = OverallResolution.y * ResolutionData.ResolutionRect.x / ResolutionData.ResolutionRect.y;
@@ -174,7 +170,7 @@ public class TouchSystem : MonoBehaviour
         Vector2 OverallResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
         float ret = 0;
         //横が長い
-        if (OverallResolution.x < OverallResolution.y)
+        if (OverallResolution.x / ResolutionData.ResolutionRect.x < OverallResolution.y / ResolutionData.ResolutionRect.y)
         {
             //16:9=X:？
             float yRect = OverallResolution.x * ResolutionData.ResolutionRect.y / ResolutionData.ResolutionRect.x;
@@ -198,6 +194,12 @@ public class TouchSystem : MonoBehaviour
         Vector3 vPoint = _touchManager._touch_position;
         return Application.isEditor ? Input.mousePosition : vPoint;
     }
+
+    void BombAnimationChatch()
+    {
+        bombBase.Catch(isMove);
+    }
+
 
     ////画面外の黒いとこを機能させない
     //bool CheckGameRect(bool mode)
