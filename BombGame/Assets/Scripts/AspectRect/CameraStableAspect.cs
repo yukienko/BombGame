@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using StaticManager;
 
-[ExecuteInEditMode()]
+//[ExecuteInEditMode()]
 [RequireComponent(typeof(Camera))]
 public class CameraStableAspect : MonoBehaviour
 {

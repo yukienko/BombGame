@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using StaticManager;
 
-[ExecuteInEditMode()]
+//[ExecuteInEditMode()]
 public class RectScalerWithViewport : MonoBehaviour
 {
     private RectTransform refRect = null;
