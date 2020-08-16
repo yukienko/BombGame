@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class BarrierItem : ItemBase
 {
-    public override void UseItem()
+    protected override ItemState.ITEMSTATE itemState
     {
-        base.UseItem();
-        Barrier();
-    }
-
-    private void Barrier()
-    {
-        Debug.Log("バーリア！");
-        Finish();
+        get => ItemState.BarrierItemState;
+        set => ItemState.BarrierItemState = value;
     }
 }

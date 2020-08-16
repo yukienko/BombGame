@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class AllDeletItem : ItemBase
 {
-    public override void UseItem()
+    private const float AllDeleteTime = 1.0f;
+
+    protected override ItemState.ITEMSTATE itemState
     {
-        base.UseItem();
-        AllDelete();
+        get => ItemState.AllDeleteItemState;
+        set => ItemState.AllDeleteItemState = value;
     }
 
-    private void AllDelete()
+    private void Awake()
     {
-        Debug.Log("デレて");
-        Finish();
+        base.itemUsingTime = AllDeleteTime;
     }
 }

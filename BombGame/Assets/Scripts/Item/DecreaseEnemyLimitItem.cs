@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class DecreaseEnemyLimitItem : ItemBase
 {
-    public override void UseItem()
+    protected override ItemState.ITEMSTATE itemState
     {
-        base.UseItem();
-        DecreaseEnemyLimit();
-    }
-
-    private void DecreaseEnemyLimit()
-    {
-        Debug.Log("これだけパッシブなんでややこしいよ");
-        Finish();
+        get => ItemState.DecreaseEnemyLimitItemState;
+        set => ItemState.DecreaseEnemyLimitItemState = value;
     }
 }

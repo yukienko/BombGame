@@ -13,31 +13,44 @@ public class ItemBase : MonoBehaviour
         allDelete
     }
 
-    public ItemState itemState { get; set; }
-    public enum ItemState
-    {
-        unused,
-        isUse,
-        finish,
-    }
+    protected virtual ItemState.ITEMSTATE itemState { get; set; }
+    protected virtual float itemUsingTime { get; set; } = 0;
+
 
     private void Start()
     {
+        itemState = ItemState.ITEMSTATE.canUse; //テスト用：アイテム使用可能状態に変更
         Init();
+    }
+
+    private void Update()
+    {
+        
     }
 
     protected void Init()
     {
-        itemState = ItemState.unused;
+        if (itemState == ItemState.ITEMSTATE.canUse)
+        {
+            itemState = ItemState.ITEMSTATE.unUsed;
+        }
+        else
+        {
+            Finish();
+        }
     }
 
     public virtual void UseItem()
     {
-        itemState = ItemState.isUse;
+        if (itemState == ItemState.ITEMSTATE.unUsed)
+        {
+            itemState = ItemState.ITEMSTATE.isUse;
+            Invoke("Finish", itemUsingTime);
+        }
     }
 
     public virtual void Finish()
     {
-        itemState = ItemState.finish;
+        itemState = ItemState.ITEMSTATE.finish;
     }
 }

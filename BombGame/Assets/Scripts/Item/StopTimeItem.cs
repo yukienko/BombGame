@@ -5,14 +5,15 @@ using UnityEngine;
 public class StopTimeItem : ItemBase
 {
     private const float StopTimeCount = 5.0f;
-    public override void UseItem()
+
+    protected override ItemState.ITEMSTATE itemState
     {
-        base.UseItem();
-        StopTime();
+        get => ItemState.StopTimeItemState;
+        set => ItemState.StopTimeItemState = value;
     }
 
-    private void StopTime()
+    private void Awake()
     {
-        Invoke("Finish", StopTimeCount);
+        base.itemUsingTime = StopTimeCount;
     }
 }

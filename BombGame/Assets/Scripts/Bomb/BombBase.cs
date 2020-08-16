@@ -22,6 +22,12 @@ public class BombBase : MonoBehaviour
         Init();
     }
 
+    private void Update()
+    {
+        CheckUsedStopTimeItem();
+        CheckUsedAllDeleteItem();
+    }
+
     private void Init()
     {
         //初期化
@@ -36,5 +42,25 @@ public class BombBase : MonoBehaviour
     public void Catch(bool isMove)
     {
         animator.SetBool("Catch", isMove);
+    }
+
+    private void CheckUsedStopTimeItem()
+    {
+        if (ItemState.StopTimeItemState == ItemState.ITEMSTATE.isUse)
+        {
+            animator.speed = 0f;
+        }
+        else
+        {
+            animator.speed = 1f;
+        }
+    }
+
+    private void CheckUsedAllDeleteItem()
+    {
+        if (ItemState.AllDeleteItemState == ItemState.ITEMSTATE.isUse)
+        {
+            Destroy(gameObject);
+        }
     }
 }
