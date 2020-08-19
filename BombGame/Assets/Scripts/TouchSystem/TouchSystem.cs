@@ -53,9 +53,12 @@ public class TouchSystem : MonoBehaviour
                     //ボムをつかんだ
                     if (Physics.Raycast(ray, out hit, distance))
                     {
-                        isMove = true;
-                        bombBase = hit.collider.gameObject.GetComponent<BombBase>();
-                        BombAnimationChatch();
+                        if (hit.collider.tag == "EnemyBomb")
+                        {
+                            isMove = true;
+                            bombBase = hit.collider.gameObject.GetComponent<BombBase>();
+                            BombAnimationChatch();
+                        }
                     }
                 }
                 //クリックし続けてるなら
@@ -71,6 +74,7 @@ public class TouchSystem : MonoBehaviour
                         fixPos.y = EachPixel(3) + EachPixel(6);
                     else if (CheckUIRect(1) == 4)
                         fixPos.y = EachPixel(4) - EachPixel(6);
+                    fixPos.z = 0;
                     pos = _camera.ScreenToWorldPoint(fixPos + _camera.transform.forward * 10);
                     bombBase.transform.position = pos;
                     //Debug.Log(Input.mousePosition + "," + pos + "," + _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10));
@@ -87,6 +91,8 @@ public class TouchSystem : MonoBehaviour
         }
         //oldの更新
         old_phase._touch_phase = _touchManager._touch_phase;
+
+        //Debug.Log("TOP:" + )
     }
 
 
@@ -122,7 +128,7 @@ public class TouchSystem : MonoBehaviour
     int CheckUIRect(int mode)
     {
         //Debug.Log(EachPixel(1) + "," + EachPixel(2) + "," + EachPixel(5));
-        Debug.Log(GameFieldPixel.x + "," + ResolutionData.GameSceneResolution.x + "," + EachPixel(5));
+        //Debug.Log(GameFieldPixel.x + "," + ResolutionData.GameSceneResolution.x + "," + EachPixel(5));
         text.text = ResolutionData.GameSceneResolution.x + "," + ResolutionData.GameSceneResolution.y;
         //横
         if (mode == 0)

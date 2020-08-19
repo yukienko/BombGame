@@ -26,6 +26,8 @@ public class BombBase : MonoBehaviour
     {
         CheckUsedStopTimeItem();
         CheckUsedAllDeleteItem();
+
+        //BombWalk();
     }
 
     private void Init()

@@ -24,6 +24,7 @@ public class BombGenerator : MonoBehaviour
     private void GenerateEnemy()
     {
         var ramdom = Random.Range(0, bombs.Length);
-        Instantiate(bombs[ramdom], bombParent);
+        Instantiate(bombs[ramdom], bombParent).transform.position = Vector3.zero;
+
     }
 }
