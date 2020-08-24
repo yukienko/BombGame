@@ -8,6 +8,7 @@ TagManager:
   - FieldWall
   - FieldWallV
   - FieldWallH
+  - BombCol
   layers:
   - Default
   - TransparentFX

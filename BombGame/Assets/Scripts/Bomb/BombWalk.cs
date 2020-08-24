@@ -1,28 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using conv;
 
 public class BombWalk : MonoBehaviour
 {
-    private const float bombWalkSpeed = 0.02f;
+    private const float bombWalkMaxSpeed = 0.02f;
+    private const float bombWalkMinSpeed = 0.005f;
     private Vector3 bombWalkVector;
+    private SpriteRenderer spriteRenderer;
 
     Vector3 bombRote = Vector3.zero;
 
     void Start()
     {
-        var hoge = Random.Range(0.005f, bombWalkSpeed);
-        bombWalkVector = new Vector3(Random.Range(-hoge, hoge), Random.Range(-hoge, hoge), 0);
-
-        if(bombWalkVector.x < 0)
+        var bombSpeedVectorX = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed);
+        var bombSpeedVectorY = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed);
+        var vectorRandX = ConvenientAssets.RandomBool();
+        var vectorRandY = ConvenientAssets.RandomBool();
+        bombWalkVector = new Vector3((vectorRandX ? bombSpeedVectorX : -bombSpeedVectorX), (vectorRandY ? bombSpeedVectorY : -bombSpeedVectorY), 0);
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if(bombWalkVector.x > 0)
         {
-            Vector3 turnToRight = new Vector3(0, 180, 0);
-            bombRote = turnToRight;
-        }
-        else
-        {
-            Vector3 turnToLeft = new Vector3(0, 0, 0);
-            bombRote = turnToLeft;
+            FlipX();
         }
     }
 
@@ -40,17 +40,17 @@ public class BombWalk : MonoBehaviour
     {
         var pos = transform.position;
         transform.position = new Vector3(pos.x, pos.y, 10);
-        transform.localRotation = new Quaternion(0, 0, 0, 0);
+        transform.rotation = Quaternion.Euler(bombRote);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("hoge");
         //縦の壁
         if(collision.transform.tag == "FieldWallV")
         {
             bombWalkVector.x *= -1;
             bombWalkVector.z = 0;
+            FlipX();
             return;
         }
         //横の壁
@@ -60,5 +60,13 @@ public class BombWalk : MonoBehaviour
             bombWalkVector.z = 0;
             return;
         }
+    }
+
+    void FlipX()
+    {
+        if (spriteRenderer.flipX == true)
+            spriteRenderer.flipX = false;
+        else
+            spriteRenderer.flipX = true;
     }
 }
