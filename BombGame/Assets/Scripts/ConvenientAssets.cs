@@ -34,5 +34,14 @@ namespace conv
             //!min以上max未満
             return Random.Range(min, max);
         }
+
+        /// <summary>
+        /// Vector2からVector3型の値を取得する
+        /// </summary>
+        /// <returns>Vector3型</returns>
+        public static Vector3 v2Tov3(float x, float y)
+        {
+            return new Vector3(x, y, 0);
+        }
     }
 }
