@@ -10,6 +10,25 @@ public class BombGenerator : MonoBehaviour
 
     private const float GenerateSpan = 2.0f;
     private const int GeneratePosVolume = 5;
+    static Vector3 center = new Vector3(0, -0.5f, 0);
+    private const float widthY = 3.5f;
+    private const float widthX = 6.0f;
+    //番号振り分け
+    //UIUIUIUIUIUIUIUIUIUIUIUIUIUI
+    //UI                        UI
+    //UI           1            UI
+    //UI                        UI
+    //UI                        UI
+    //UI   2       0        3   UI
+    //UI                        UI
+    //UI                        UI
+    //UI           4            UI
+    private Vector3[] RandSpawnPos =
+        { center,
+        center + ConvenientAssets.v2Tov3(0, widthY),
+        center + ConvenientAssets.v2Tov3(widthX, 0),
+        center + ConvenientAssets.v2Tov3(widthX, 0),
+        center + ConvenientAssets.v2Tov3(0, -widthY)};
 
     private float time = 0;
 
@@ -50,46 +69,8 @@ public class BombGenerator : MonoBehaviour
     private void SpawnEnemy()
     {
         BombsList[activeEnemyCount].gameObject.SetActive(true);
-        BombsList[activeEnemyCount].gameObject.transform.position = RandSpawnPos();
-        activeEnemyCount++;
-    }
-
-    private Vector3 RandSpawnPos()
-    {
-        Vector3 center = new Vector3(0, -0.5f, 0);
-        Vector3 ret = center;
-        float widthY = 3.5f;
-        float widthX = 6.0f;
-
-        //番号振り分け
-        //UIUIUIUIUIUIUIUIUIUIUIUIUIUI
-        //UI                        UI
-        //UI           1            UI
-        //UI                        UI
-        //UI                        UI
-        //UI   2       0        3   UI
-        //UI                        UI
-        //UI                        UI
-        //UI           4            UI
         var rand = ConvenientAssets.RandomInt(0, GeneratePosVolume);
-        switch (rand)
-        {
-            case 0:
-                ret = center;
-                break;
-            case 1:
-                ret = center + ConvenientAssets.v2Tov3(0, widthY);
-                break;
-            case 2:
-                ret = center + ConvenientAssets.v2Tov3(-widthX, 0);
-                break;
-            case 3:
-                ret = center + ConvenientAssets.v2Tov3(widthX, 0);
-                break;
-            case 4:
-                ret = center + ConvenientAssets.v2Tov3(0, -widthY);
-                break;
-        }
-        return ret;
+        BombsList[activeEnemyCount].gameObject.transform.position = RandSpawnPos[rand];
+        activeEnemyCount++;
     }
 }
