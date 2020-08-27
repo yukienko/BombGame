@@ -7,6 +7,7 @@ public class BombGenerator : MonoBehaviour
 {
     [SerializeField] BombBase[] bombs = default;
     [SerializeField] Transform bombParent = default;
+    BombBase bombBase;
 
     private const float GenerateSpan = 2.0f;
     private const int GeneratePosVolume = 5;
@@ -33,7 +34,7 @@ public class BombGenerator : MonoBehaviour
     private float time = 0;
 
     //初期各色生成数
-    private const int DefaultGenerateBombValue = 100;
+    private const int DefaultGenerateBombValue = 1000;
     [SerializeField] List<BombBase> BombsList = default;
     int activeEnemyCount = 0;
 
@@ -72,5 +73,7 @@ public class BombGenerator : MonoBehaviour
         var rand = ConvenientAssets.RandomInt(0, GeneratePosVolume);
         BombsList[activeEnemyCount].gameObject.transform.position = RandSpawnPos[rand];
         activeEnemyCount++;
+        bombBase.bombWalkSpeed = 1.5f;
+
     }
 }

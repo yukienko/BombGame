@@ -9,7 +9,8 @@ public class BombWalk : MonoBehaviour
     private const float bombWalkMinSpeed = 0.005f;
     private Vector3 bombWalkVector;
     private SpriteRenderer spriteRenderer;
-
+    private bool isCollisionStay;
+    private string wallTag;
     Vector3 bombRote = Vector3.zero;
 
     void Start()
@@ -24,6 +25,7 @@ public class BombWalk : MonoBehaviour
         {
             FlipX();
         }
+        isCollisionStay = false;
     }
 
     void Update()
@@ -33,7 +35,6 @@ public class BombWalk : MonoBehaviour
 
         //バグ修正までの補正
         fixrote();
-
     }
 
     void fixrote()
@@ -43,23 +44,36 @@ public class BombWalk : MonoBehaviour
         transform.rotation = Quaternion.Euler(bombRote);
     }
 
+
     void OnCollisionEnter(Collision collision)
     {
-        //縦の壁
-        if(collision.transform.tag == "FieldWallV")
+        if (!isCollisionStay)
         {
-            bombWalkVector.x *= -1;
-            bombWalkVector.z = 0;
-            FlipX();
-            return;
+            //縦の壁
+            if (collision.transform.tag == "FieldWallV")
+            {
+                wallTag = collision.transform.tag;
+                bombWalkVector.x *= -1;
+                bombWalkVector.z = 0;
+                FlipX();
+                return;
+            }
+            //横の壁
+            if (collision.transform.tag == "FieldWallH")
+            {
+                wallTag = collision.transform.tag;
+                bombWalkVector.y *= -1;
+                bombWalkVector.z = 0;
+                return;
+            }
+            isCollisionStay = true;
         }
-        //横の壁
-        if(collision.transform.tag == "FieldWallH")
-        {
-            bombWalkVector.y *= -1;
-            bombWalkVector.z = 0;
-            return;
-        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if(wallTag == collision.transform.tag)
+            isCollisionStay = false;
     }
 
     void FlipX()
