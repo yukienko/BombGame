@@ -9,7 +9,6 @@ public class BombBase : MonoBehaviour
     private const float InitPositionZ = 10f;
 
     public ENEMYCOLOR enemyColor;
-    public float bombWalkSpeed;
 
     public enum ENEMYCOLOR
     {

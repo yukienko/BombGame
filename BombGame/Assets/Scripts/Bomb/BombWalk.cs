@@ -9,9 +9,18 @@ public class BombWalk : MonoBehaviour
     private const float bombWalkMinSpeed = 0.005f;
     private Vector3 bombWalkVector;
     private SpriteRenderer spriteRenderer;
-    private bool isCollisionStay;
+    public bool isCollisionStay;
     private string wallTag;
     Vector3 bombRote = Vector3.zero;
+    private string[] bombsColor =
+    {
+        "Red",
+        "Blue",
+        "Yellow",
+        "Green",
+    };
+
+    BombBase bombs;
 
     void Start()
     {
@@ -19,13 +28,20 @@ public class BombWalk : MonoBehaviour
         var bombSpeedVectorY = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed);
         var vectorRandX = ConvenientAssets.RandomBool();
         var vectorRandY = ConvenientAssets.RandomBool();
-        bombWalkVector = new Vector3((vectorRandX ? bombSpeedVectorX : -bombSpeedVectorX), (vectorRandY ? bombSpeedVectorY : -bombSpeedVectorY), 0);
+        bombWalkVector = new Vector3
+            ((vectorRandX ? bombSpeedVectorX : -bombSpeedVectorX),
+            (vectorRandY ? bombSpeedVectorY : -bombSpeedVectorY),
+            0);
         spriteRenderer = GetComponent<SpriteRenderer>();
         if(bombWalkVector.x > 0)
         {
             FlipX();
         }
         isCollisionStay = false;
+        transform.GetComponent<Animator>().SetFloat("Speed"
+            ,Mathf.Abs(bombWalkVector.x * bombWalkVector.y) * 10000);
+
+        Debug.Log(transform.GetComponent<Animator>().GetFloat("Speed"));
     }
 
     void Update()
@@ -47,8 +63,9 @@ public class BombWalk : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!isCollisionStay)
+        //if (!isCollisionStay)
         {
+            isCollisionStay = true;
             //縦の壁
             if (collision.transform.tag == "FieldWallV")
             {
@@ -59,21 +76,27 @@ public class BombWalk : MonoBehaviour
                 return;
             }
             //横の壁
-            if (collision.transform.tag == "FieldWallH")
+            else if (collision.transform.tag == "FieldWallH")
             {
                 wallTag = collision.transform.tag;
                 bombWalkVector.y *= -1;
                 bombWalkVector.z = 0;
                 return;
             }
-            isCollisionStay = true;
+            else
+            {
+                Debug.LogError("!ありえん壁あるんやが？");
+            }
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if(wallTag == collision.transform.tag)
+        if (wallTag == collision.transform.tag)
+        {
             isCollisionStay = false;
+            wallTag = null;
+        }
     }
 
     void FlipX()
