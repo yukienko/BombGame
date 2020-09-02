@@ -14,9 +14,6 @@ public class TouchSystem : MonoBehaviour
     bool isMove;
     Vector2 GameFieldPixel;
 
-    //テスト用！入れてて！
-    public Text text;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +21,7 @@ public class TouchSystem : MonoBehaviour
         old_phase = new TouchManager();
         isMove = false;
         GameFieldPixel = new Vector2(HorizontalPixelCalc(), VerticalPixelCalc());
+        Debug.LogWarning("GameFieldPixel:" + GameFieldPixel);
     }
 
     // Update is called once per frame
@@ -129,7 +127,7 @@ public class TouchSystem : MonoBehaviour
     {
         //Debug.Log(EachPixel(1) + "," + EachPixel(2) + "," + EachPixel(5));
         //Debug.Log(GameFieldPixel.x + "," + ResolutionData.GameSceneResolution.x + "," + EachPixel(5));
-        text.text = ResolutionData.GameSceneResolution.x + "," + ResolutionData.GameSceneResolution.y;
+        //text.text = ResolutionData.GameSceneResolution.x + "," + ResolutionData.GameSceneResolution.y;
         //横
         if (mode == 0)
         {

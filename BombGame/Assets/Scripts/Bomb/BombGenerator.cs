@@ -61,7 +61,6 @@ public class BombGenerator : MonoBehaviour
             var random = Random.Range(0, bombs.Length);
             BombsList.Add(Instantiate(bombs[random], bombParent));
             BombsList[i].gameObject.SetActive(false);
-            Debug.Log(i);
         }
     }
 
