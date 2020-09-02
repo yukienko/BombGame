@@ -12,7 +12,10 @@ public class DisplayPanel : MonoBehaviour
 
     protected virtual void Init()
     {
-        Hide();
+        if (e_panel == PANEL.hide)
+        {
+            Hide();
+        }
     }
 
     public void Toggle()
@@ -20,12 +23,10 @@ public class DisplayPanel : MonoBehaviour
         if (e_panel == PANEL.hide)
         {
             Show();
-            Debug.Log("見える処理" + e_panel);
         }
         else if (e_panel == PANEL.show)
         {
             Hide();
-            Debug.Log("消える処理" + e_panel);
         }
     }
 
@@ -50,5 +51,5 @@ public class hoge
         hide,
     }
 
-    public static PANEL e_panel { get; set; }
+    public static PANEL e_panel { get; set; } = PANEL.hide;
 };
