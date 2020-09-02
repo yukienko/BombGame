@@ -11,21 +11,14 @@ public class BombWalk : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public bool isCollisionStay;
     private string wallTag;
+    private float timeSpeedUp;
     Vector3 bombRote = Vector3.zero;
-    private string[] bombsColor =
-    {
-        "Red",
-        "Blue",
-        "Yellow",
-        "Green",
-    };
-
-    BombBase bombs;
 
     void Start()
     {
-        var bombSpeedVectorX = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed);
-        var bombSpeedVectorY = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed);
+        timeSpeedUp = 1;
+        var bombSpeedVectorX = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed) * timeSpeedUp;
+        var bombSpeedVectorY = Random.Range(bombWalkMinSpeed, bombWalkMaxSpeed) * timeSpeedUp;
         var vectorRandX = ConvenientAssets.RandomBool();
         var vectorRandY = ConvenientAssets.RandomBool();
         bombWalkVector = new Vector3
@@ -47,7 +40,7 @@ public class BombWalk : MonoBehaviour
     void Update()
     {
         //歩く処理(常に一定のスピードで向いているベクトルに進み続ける)
-        transform.Translate(bombWalkVector);
+        transform.Translate(bombWalkVector * 100 * Time.deltaTime);
 
         //バグ修正までの補正
         fixrote();
