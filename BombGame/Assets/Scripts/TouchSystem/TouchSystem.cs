@@ -13,6 +13,7 @@ public class TouchSystem : MonoBehaviour
     Vector3 oldPos;
     bool isMove;
     Vector2 GameFieldPixel;
+    Vector3 pos = default;
 
     // Start is called before the first frame update
     void Start()
@@ -29,70 +30,87 @@ public class TouchSystem : MonoBehaviour
     {
         //タッチ情報更新
         TouchManagerUpdate();
+        //タッチされているオブジェクトなどの更新
+        TouchSystemUpdate();
+    }
+
+    void TouchSystemUpdate()
+    {
         if (_touchManager._touch_flag)
         {
-            Vector3 pos = default;
+            //クリックし始めの処理
             if (old_phase._touch_phase == TouchPhase.Began)
             {
-                // マウスのワールド座標までパーティクルを移動し、パーティクルエフェクトを1つ生成する
-                pos = _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10);
-
+                TouchPhaseBegan();
             }
             else if (_touchManager._touch_phase == TouchPhase.Moved)
             {
-                //ボムをつかむまで
-                if (bombBase == default)
-                {
-                    float distance = 100; // 飛ばす&表示するRayの長さ
-                    float duration = 3;   // 表示期間（秒）
-                    Ray ray = Camera.main.ScreenPointToRay(AlmightyTapPosition());
-                    Debug.DrawRay(ray.origin, ray.direction * distance, Color.red, duration, false);
-                    RaycastHit hit = new RaycastHit();
-                    //ボムをつかんだ
-                    if (Physics.Raycast(ray, out hit, distance))
-                    {
-                        if (hit.collider.tag == "EnemyBomb")
-                        {
-                            isMove = true;
-                            bombBase = hit.collider.gameObject.GetComponent<BombBase>();
-                            BombAnimationChatch();
-                        }
-                    }
-                }
-                //クリックし続けてるなら
-                if (isMove)
-                {
-                    pos = _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10);
-                    Vector3 fixPos = AlmightyTapPosition();
-                    if (CheckUIRect(0) == 1)
-                        fixPos.x = EachPixel(1) + EachPixel(5);
-                    else if (CheckUIRect(0) == 2)
-                        fixPos.x = EachPixel(2) - EachPixel(5);
-                    if (CheckUIRect(1) == 3)
-                        fixPos.y = EachPixel(3) + EachPixel(6);
-                    else if (CheckUIRect(1) == 4)
-                        fixPos.y = EachPixel(4) - EachPixel(6);
-                    fixPos.z = 0;
-                    pos = _camera.ScreenToWorldPoint(fixPos + _camera.transform.forward * 10);
-                    bombBase.transform.position = pos;
-                    //Debug.Log(Input.mousePosition + "," + pos + "," + _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10));
-                }
+                TouchPhaseMoved();
             }
             else if (_touchManager._touch_phase == TouchPhase.Ended)
             {
-                isMove = false;
-                if (bombBase != default)
-                    BombAnimationChatch();
-                bombBase = default;
+                TouchPhaseEnded();
             }
             oldPos = pos;
         }
         //oldの更新
         old_phase._touch_phase = _touchManager._touch_phase;
-
-        //Debug.Log("TOP:" + )
     }
 
+    void TouchPhaseBegan()
+    {
+        // マウスのワールド座標までパーティクルを移動し、パーティクルエフェクトを1つ生成する
+        pos = _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10);
+    }
+
+    void TouchPhaseMoved()
+    {
+        //ボムをつかむまで
+        if (bombBase == default)
+        {
+            float distance = 100; // 飛ばす&表示するRayの長さ
+            float duration = 3;   // 表示期間（秒）
+            Ray ray = Camera.main.ScreenPointToRay(AlmightyTapPosition());
+            Debug.DrawRay(ray.origin, ray.direction * distance, Color.red, duration, false);
+            RaycastHit hit = new RaycastHit();
+            //ボムをつかんだ
+            if (Physics.Raycast(ray, out hit, distance))
+            {
+                if (hit.collider.tag == "EnemyBomb")
+                {
+                    isMove = true;
+                    bombBase = hit.collider.gameObject.GetComponent<BombBase>();
+                    BombAnimationChatch();
+                }
+            }
+        }
+        //クリックし続けてるなら
+        if (isMove)
+        {
+            pos = _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10);
+            Vector3 fixPos = AlmightyTapPosition();
+            if (CheckUIRect(0) == 1)
+                fixPos.x = EachPixel(1) + EachPixel(5);
+            else if (CheckUIRect(0) == 2)
+                fixPos.x = EachPixel(2) - EachPixel(5);
+            if (CheckUIRect(1) == 3)
+                fixPos.y = EachPixel(3) + EachPixel(6);
+            else if (CheckUIRect(1) == 4)
+                fixPos.y = EachPixel(4) - EachPixel(6);
+            fixPos.z = 0;
+            pos = _camera.ScreenToWorldPoint(fixPos + _camera.transform.forward * 10);
+            bombBase.transform.position = pos;
+            //Debug.Log(Input.mousePosition + "," + pos + "," + _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10));
+        }
+    }
+
+    void TouchPhaseEnded()
+    {
+        isMove = false;
+        if (bombBase != default)
+            BombAnimationChatch();
+        bombBase = default;
+    }
 
     float EachPixel(int mode)
     {
@@ -103,7 +121,7 @@ public class TouchSystem : MonoBehaviour
         float gameLeft = (ResolutionData.GameSceneResolution.x - GameFieldPixel.x) / 2;
         float gameRight = GameFieldPixel.x + ((ResolutionData.GameSceneResolution.x - GameFieldPixel.x) / 2);
         float gameTop = GameFieldPixel.y + ((ResolutionData.GameSceneResolution.y - GameFieldPixel.y) / 2);
-        float gameButtom = (ResolutionData.GameSceneResolution.y - GameFieldPixel.y) / 2;
+        float gameButtom = upperUIZone + ((ResolutionData.GameSceneResolution.y - GameFieldPixel.y) / 2);
 
         switch (mode)
         {
