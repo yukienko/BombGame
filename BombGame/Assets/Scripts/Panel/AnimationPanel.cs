@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class AnimationPanel : DisplayPanel
 {
-    float animationTime = 0;
+    private const float AnimationTime = 0;
     protected RectTransform animationPanelTransform = default;
 
     [SerializeField] private Transform canvas = default;
@@ -24,12 +25,13 @@ public class AnimationPanel : DisplayPanel
     protected override void ShowPanel()
     {
         transform.SetParent(canvas);
-        animationPanelTransform.
+        animationPanelTransform.DOScale(1, AnimationTime);
     }
 
     protected override void HidePanel()
     {
-        base.HidePanel();
+        var hideAnimationTween = animationPanelTransform.DOScale(0, AnimationTime);
+        hideAnimationTween.OnComplete(OnCompleteHideAnimation);
     }
 
     protected virtual void OnCompleteHideAnimation()
