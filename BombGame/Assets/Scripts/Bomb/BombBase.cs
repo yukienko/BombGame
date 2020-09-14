@@ -7,6 +7,7 @@ public class BombBase : MonoBehaviour
 {
     private Animator animator = default;
     private const float InitPositionZ = 10f;
+    private new Rigidbody rigidbody = default;
 
     public ENEMYCOLOR enemyColor;
 
@@ -16,6 +17,11 @@ public class BombBase : MonoBehaviour
         blue,
         yellow,
         green,
+    }
+
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -28,7 +34,7 @@ public class BombBase : MonoBehaviour
         CheckUsedStopTimeItem();
         CheckUsedAllDeleteItem();
 
-        //BombWalk();
+        //CheckCatchedBomb();
     }
 
     private void Init()
@@ -64,6 +70,19 @@ public class BombBase : MonoBehaviour
         if (ItemState.AllDeleteItemState == ItemState.ITEMSTATE.isUse)
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void CheckCatchedBomb()
+    {
+        if (animator.GetBool("Catch"))
+        {
+            //つかまれてるのでボムの物理演算をしない
+            rigidbody.isKinematic = true;
+        }
+        else
+        {
+            rigidbody.isKinematic = false;
         }
     }
 }

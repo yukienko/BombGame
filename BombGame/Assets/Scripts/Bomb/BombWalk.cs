@@ -5,14 +5,21 @@ using conv;
 
 public class BombWalk : MonoBehaviour
 {
-    private const float bombWalkMaxSpeed = 0.02f;
-    private const float bombWalkMinSpeed = 0.005f;
-    private Vector3 bombWalkVector;
-    private SpriteRenderer spriteRenderer;
-    public bool isCollisionStay;
-    private string wallTag;
-    private float timeSpeedUp;
-    Vector3 bombRote = Vector3.zero;
+    private const float bombWalkMaxSpeed = 0.02f;               //ボムのあるくベクトルの大きさの最大値
+    private const float bombWalkMinSpeed = 0.005f;              //ボムのあるくベクトルの大きさの最小値
+    private const float revisionBombWalkSpeedValue = 100.0f;    //ボムの歩き速度調整用
+    private Vector3 bombWalkVector;                             //ボムの進むベクトル
+    private SpriteRenderer spriteRenderer;                      //画像反転用
+    private string wallTag;                                     //壁認識用
+    private float timeSpeedUp;                                  //時間がたつにつれ値を上げていく
+    private Vector3 bombRote = Vector3.zero;                    //ボム回転の補正用
+    private Animator bombAnimator;                              //つかんでるとき動作させないため
+
+
+    private void Awake()
+    {
+        bombAnimator = GetComponent<Animator>();
+    }
 
     void Start()
     {
@@ -30,18 +37,27 @@ public class BombWalk : MonoBehaviour
         {
             FlipX();
         }
-        isCollisionStay = false;
         transform.GetComponent<Animator>().SetFloat("Speed"
-            ,Mathf.Abs(bombWalkVector.x * bombWalkVector.y) * 10000);
+            ,Mathf.Abs(bombWalkVector.x * bombWalkVector.y) * Mathf.Pow(revisionBombWalkSpeedValue,2));
 
         Debug.Log(transform.GetComponent<Animator>().GetFloat("Speed"));
     }
 
     void Update()
     {
-        //歩く処理(常に一定のスピードで向いているベクトルに進み続ける)
-        transform.Translate(bombWalkVector * 100 * Time.deltaTime);
+        MoveUpdate();
 
+
+    }
+
+    void MoveUpdate()
+    {
+        //つかまれていないとき
+        if (!isCatchBomb())
+        {
+            //歩く処理(常に一定のスピードで向いているベクトルに進み続ける)
+            transform.Translate(bombWalkVector * revisionBombWalkSpeedValue * Time.deltaTime);
+        }
         //バグ修正までの補正
         fixrote();
     }
@@ -54,11 +70,12 @@ public class BombWalk : MonoBehaviour
     }
 
 
+
+
     void OnCollisionEnter(Collision collision)
     {
-        //if (!isCollisionStay)
+        if (!isCatchBomb())
         {
-            isCollisionStay = true;
             //縦の壁
             if (collision.transform.tag == "FieldWallV")
             {
@@ -78,7 +95,7 @@ public class BombWalk : MonoBehaviour
             }
             else
             {
-                Debug.LogError("!ありえん壁あるんやが？");
+                Debug.LogError("!ありえんコライダあるんやが？");
             }
         }
     }
@@ -87,7 +104,6 @@ public class BombWalk : MonoBehaviour
     {
         if (wallTag == collision.transform.tag)
         {
-            isCollisionStay = false;
             wallTag = null;
         }
     }
@@ -98,5 +114,10 @@ public class BombWalk : MonoBehaviour
             spriteRenderer.flipX = false;
         else
             spriteRenderer.flipX = true;
+    }
+
+    bool isCatchBomb()
+    {
+        return (bombAnimator.GetBool("Catch"));
     }
 }
