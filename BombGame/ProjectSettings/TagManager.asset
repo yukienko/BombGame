@@ -9,6 +9,7 @@ TagManager:
   - FieldWallV
   - FieldWallH
   - BombCol
+  - CatchZone
   layers:
   - Default
   - TransparentFX
@@ -18,14 +19,14 @@ TagManager:
   - UI
   - 
   - 
-  - BlindBombBG
+  - 
+  - 
   - Bomb
+  - CatchedBomb
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - BlindBombBG
   - 
   - 
   - 
