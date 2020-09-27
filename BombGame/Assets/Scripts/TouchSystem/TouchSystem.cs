@@ -100,6 +100,7 @@ public class TouchSystem : MonoBehaviour
             fixPos.z = 0;
             pos = _camera.ScreenToWorldPoint(fixPos + _camera.transform.forward * 10);
             bombBase.transform.position = pos;
+            bombBase.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             //Debug.Log(Input.mousePosition + "," + pos + "," + _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10));
         }
     }
@@ -107,6 +108,7 @@ public class TouchSystem : MonoBehaviour
     void TouchPhaseEnded()
     {
         isMove = false;
+        bombBase.gameObject.GetComponent<Rigidbody>().isKinematic = false;
         if (bombBase != default)
             BombAnimationChatch();
         bombBase = default;

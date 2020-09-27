@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 8681195823244606736}
   - component: {fileID: 4051074551703379625}
   - component: {fileID: -9145802748268930251}
-  m_Layer: 9
+  - component: {fileID: 4768252671355558294}
+  m_Layer: 10
   m_Name: BlueBomb
   m_TagString: EnemyBomb
   m_Icon: {fileID: 0}
@@ -160,3 +161,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4768252671355558294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710631548968154545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b44372c377c56e419d4475387c522f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

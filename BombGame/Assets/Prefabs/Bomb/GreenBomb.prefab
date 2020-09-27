@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 256633295196034788}
   - component: {fileID: 251856521311793388}
   - component: {fileID: -1837249695232033435}
-  m_Layer: 9
+  - component: {fileID: -7270008115633405639}
+  m_Layer: 10
   m_Name: GreenBomb
   m_TagString: EnemyBomb
   m_Icon: {fileID: 0}
@@ -160,3 +161,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-7270008115633405639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5226634898557722181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b44372c377c56e419d4475387c522f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

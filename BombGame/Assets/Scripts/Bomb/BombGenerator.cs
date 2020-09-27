@@ -33,7 +33,7 @@ public class BombGenerator : MonoBehaviour
     private float time = 0;
 
     //初期各色生成数
-    private const int DefaultGenerateBombValue = 100;
+    private const int DefaultGenerateBombValue = 1;
     [SerializeField] List<BombBase> BombsList = default;
     int activeEnemyCount = 0;
 

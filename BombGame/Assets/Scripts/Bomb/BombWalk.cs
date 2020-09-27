@@ -53,10 +53,11 @@ public class BombWalk : MonoBehaviour
     void MoveUpdate()
     {
         //つかまれていないとき
-        if (!isCatchBomb())
+        if (!isCatchBomb() && !isAnimeBomb())
         {
             //歩く処理(常に一定のスピードで向いているベクトルに進み続ける)
             transform.Translate(bombWalkVector * revisionBombWalkSpeedValue * Time.deltaTime);
+            Debug.Log(bombWalkVector.x + "," + bombWalkVector.y);
         }
         //バグ修正までの補正
         fixrote();
@@ -69,12 +70,9 @@ public class BombWalk : MonoBehaviour
         transform.rotation = Quaternion.Euler(bombRote);
     }
 
-
-
-
     void OnCollisionEnter(Collision collision)
     {
-        if (!isCatchBomb())
+        if (!isCatchBomb() && !isAnimeBomb())
         {
             //縦の壁
             if (collision.transform.tag == "FieldWallV")
@@ -119,5 +117,9 @@ public class BombWalk : MonoBehaviour
     bool isCatchBomb()
     {
         return (bombAnimator.GetBool("Catch"));
+    }
+    bool isAnimeBomb()
+    {
+        return (bombAnimator.GetBool("CatchAnim"));
     }
 }
