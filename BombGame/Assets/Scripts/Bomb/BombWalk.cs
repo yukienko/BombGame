@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using conv;
+using UnityEngine.Assertions.Must;
 
 public class BombWalk : MonoBehaviour
 {
@@ -46,8 +47,6 @@ public class BombWalk : MonoBehaviour
     void Update()
     {
         MoveUpdate();
-
-
     }
 
     void MoveUpdate()
@@ -93,7 +92,7 @@ public class BombWalk : MonoBehaviour
             }
             else
             {
-                Debug.LogError("!ありえんコライダあるんやが？");
+                Debug.LogError("!ありえんコライダあるんやが？:" + collision.gameObject.name);
             }
         }
     }

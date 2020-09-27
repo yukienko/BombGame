@@ -87,7 +87,13 @@ public class BombAnimation : MonoBehaviour
         switch (animationState)
         {
             case ANIMATIONSTATE.None:
-
+                if (!isCatchBomb())
+                {
+                    if (CatchZoneDecision())
+                    {
+                        SetState(ANIMATIONSTATE.StartAnime);
+                    }
+                }
                 break;
             //アニメ開始準備
             case ANIMATIONSTATE.StartAnime:
@@ -99,7 +105,8 @@ public class BombAnimation : MonoBehaviour
                 Animation();
                 break;
             case ANIMATIONSTATE.EndAnime:
-                Init();
+                isAnimated = false;
+
                 SetState(ANIMATIONSTATE.None);
                 break;
         }
@@ -146,23 +153,57 @@ public class BombAnimation : MonoBehaviour
         gameObject.layer = 11;
     }
 
-    void OnCollisionEnter(Collision collision)
+    bool CatchZoneDecision()
     {
-        if (collision.transform.tag == "CatchZone" && !isAnimated)
+        float distance = 100; // 飛ばす&表示するRayの長さ
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // !!!!!!!!!!!!!
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(ray, out hit, distance))
         {
-            isAnimated = true;
-            bombAnimator.SetBool("CatchAnim", true);
-            SetState(ANIMATIONSTATE.StartAnime);
-            rigidbody.isKinematic = true;
+            if (hit.collider.tag == "CatchZone" && !isAnimated)
+            {
+                isAnimated = true;
+                bombAnimator.SetBool("CatchAnim", true);
+                SetState(ANIMATIONSTATE.StartAnime);
+                rigidbody.isKinematic = true;
 
-            if (collision.transform.name == "CapZone1")
-                catchPosValue = 0;
-            else if (collision.transform.name == "CapZone2")
-                catchPosValue = 1;
-            else if (collision.transform.name == "CapZone3")
-                catchPosValue = 2;
-            else if (collision.transform.name == "CapZone4")
-                catchPosValue = 3;
+                if (hit.collider.transform.name == "CapZone1")
+                    catchPosValue = 0;
+                else if (hit.collider.transform.name == "CapZone2")
+                    catchPosValue = 1;
+                else if (hit.collider.transform.name == "CapZone3")
+                    catchPosValue = 2;
+                else if (hit.collider.transform.name == "CapZone4")
+                    catchPosValue = 3;
+
+                return true;
+            }
         }
+        return false;
     }
+
+    bool isCatchBomb()
+    {
+        return (bombAnimator.GetBool("Catch"));
+    }
+
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.transform.tag == "CatchZone" && !isAnimated)
+    //    {
+    //        isAnimated = true;
+    //        bombAnimator.SetBool("CatchAnim", true);
+    //        SetState(ANIMATIONSTATE.StartAnime);
+    //        rigidbody.isKinematic = true;
+
+    //        if (collision.transform.name == "CapZone1")
+    //            catchPosValue = 0;
+    //        else if (collision.transform.name == "CapZone2")
+    //            catchPosValue = 1;
+    //        else if (collision.transform.name == "CapZone3")
+    //            catchPosValue = 2;
+    //        else if (collision.transform.name == "CapZone4")
+    //            catchPosValue = 3;
+    //    }
+    //}
 }
