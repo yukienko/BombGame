@@ -40,8 +40,6 @@ public class BombWalk : MonoBehaviour
         }
         transform.GetComponent<Animator>().SetFloat("Speed"
             ,Mathf.Abs(bombWalkVector.x * bombWalkVector.y) * Mathf.Pow(revisionBombWalkSpeedValue,2));
-
-        Debug.Log(transform.GetComponent<Animator>().GetFloat("Speed"));
     }
 
     void Update()
@@ -56,7 +54,6 @@ public class BombWalk : MonoBehaviour
         {
             //歩く処理(常に一定のスピードで向いているベクトルに進み続ける)
             transform.Translate(bombWalkVector * revisionBombWalkSpeedValue * Time.deltaTime);
-            Debug.Log(bombWalkVector.x + "," + bombWalkVector.y);
         }
         //バグ修正までの補正
         fixrote();

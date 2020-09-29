@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using conv;
+using StateManager;
+using StaticManager;
 
 public class BombAnimation : MonoBehaviour
 {
+    BombBase bombBase;
+
     private new Rigidbody rigidbody = default;      //つかんで離したときに壁に埋まるのを防止
     private Animator bombAnimator = default;
+    private TouchManager _touchManager;
+    private TouchManager old_phase;
     private bool isAnimated;
 
     //アニメーションで使う値
@@ -23,7 +29,8 @@ public class BombAnimation : MonoBehaviour
     //計算した値を入れる
     private Vector3 bombMovePos;
 
-    private ANIMATIONSTATE animationState;
+    private E_ANIMATIONSTATE animationState;
+    private E_BOMBCOLORFORPANEL bombColorForPanel;
 
     //番号振り分け
     //UIUIUIUIUIUIUIUIUIUIUIUIUIUI
@@ -41,73 +48,105 @@ public class BombAnimation : MonoBehaviour
         ConvenientAssets.v2Tov3(widthMax.x,-widthMax.y),
         ConvenientAssets.v2Tov3(-widthMax.x,-widthMax.y)};
 
-    private enum ANIMATIONSTATE
+    private enum E_ANIMATIONSTATE
     {
         None,
         StartAnime,
         PlayAnime,
+        BombAnime,
         EndAnime,
+    }
+
+    private enum E_BOMBCOLORFORPANEL
+    {
+        red = 1,
+        blue,
+        yellow,
+        green,
     }
 
     private void Awake()
     {
         Init();
         isAnimated = false;
+        _touchManager = new TouchManager();
+        old_phase = new TouchManager();
     }
 
     private void Init()
     {
+        bombBase = GetComponent<BombBase>();
         bombAnimator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
         radius = 2.0f;
         rigidbody.isKinematic = false;
     }
 
-    private void SetState(ANIMATIONSTATE state)
+    private void SetState(E_ANIMATIONSTATE state)
     {
         switch (state)
         {
-            case ANIMATIONSTATE.None:
-                animationState = ANIMATIONSTATE.None;
+            case E_ANIMATIONSTATE.None:
+                animationState = E_ANIMATIONSTATE.None;
                 break;
-            case ANIMATIONSTATE.StartAnime:
-                animationState = ANIMATIONSTATE.StartAnime;
+            case E_ANIMATIONSTATE.StartAnime:
+                animationState = E_ANIMATIONSTATE.StartAnime;
                 break;
-            case ANIMATIONSTATE.PlayAnime:
-                animationState = ANIMATIONSTATE.PlayAnime;
+            case E_ANIMATIONSTATE.PlayAnime:
+                animationState = E_ANIMATIONSTATE.PlayAnime;
                 break;
-            case ANIMATIONSTATE.EndAnime:
-                animationState = ANIMATIONSTATE.EndAnime;
+            case E_ANIMATIONSTATE.BombAnime:
+                animationState = E_ANIMATIONSTATE.BombAnime;
+                break;
+            case E_ANIMATIONSTATE.EndAnime:
+                animationState = E_ANIMATIONSTATE.EndAnime;
                 break;
         }
     }
 
     private void Update()
     {
+        TouchManagerUpdate();
+
+
         switch (animationState)
         {
-            case ANIMATIONSTATE.None:
+            case E_ANIMATIONSTATE.None:
                 if (!isCatchBomb())
                 {
-                    if (CatchZoneDecision())
+                    int hoge = CatchZoneDecision();
+                    if (hoge == 0)
                     {
-                        SetState(ANIMATIONSTATE.StartAnime);
+                        //ボムとパネルの色があってるのでアニメーションに移る
+                        SetState(E_ANIMATIONSTATE.StartAnime);
+                    }
+                    else if(hoge == 1)
+                    {
+                        //なんもなし
+                    }
+                    else if(hoge == 2)
+                    {
+                        //爆発
+                        Debug.Log("爆発☆");
+                        SetState(E_ANIMATIONSTATE.BombAnime);
                     }
                 }
                 break;
             //アニメ開始準備
-            case ANIMATIONSTATE.StartAnime:
+            case E_ANIMATIONSTATE.StartAnime:
                 Init();//初回用
-                SetState(ANIMATIONSTATE.PlayAnime);
+                SetState(E_ANIMATIONSTATE.PlayAnime);
                 break;
             //アニメーション
-            case ANIMATIONSTATE.PlayAnime:
+            case E_ANIMATIONSTATE.PlayAnime:
                 Animation();
                 break;
-            case ANIMATIONSTATE.EndAnime:
+            case E_ANIMATIONSTATE.BombAnime:
+                break;
+            case E_ANIMATIONSTATE.EndAnime:
                 isAnimated = false;
 
-                SetState(ANIMATIONSTATE.None);
+                SetState(E_ANIMATIONSTATE.None);
                 break;
         }
     }
@@ -147,16 +186,16 @@ public class BombAnimation : MonoBehaviour
 
     private void EndAnime()
     {
-        SetState(ANIMATIONSTATE.EndAnime);
+        SetState(E_ANIMATIONSTATE.EndAnime);
         bombAnimator.SetBool("CatchAnim", false);
         GetComponent<BombAnimation>().enabled = false;
         gameObject.layer = 11;
     }
 
-    bool CatchZoneDecision()
+    int CatchZoneDecision()
     {
         float distance = 100; // 飛ばす&表示するRayの長さ
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // !!!!!!!!!!!!!
+        Ray ray = Camera.main.ScreenPointToRay(AlmightyTapPosition());
         RaycastHit hit = new RaycastHit();
         if (Physics.Raycast(ray, out hit, distance))
         {
@@ -164,46 +203,49 @@ public class BombAnimation : MonoBehaviour
             {
                 isAnimated = true;
                 bombAnimator.SetBool("CatchAnim", true);
-                SetState(ANIMATIONSTATE.StartAnime);
                 rigidbody.isKinematic = true;
 
-                if (hit.collider.transform.name == "CapZone1")
+                if (hit.collider.transform.name == "CapZone1" && (int)E_BOMBCOLORFORPANEL.blue == (int)bombBase.enemyColor)
+                {
                     catchPosValue = 0;
-                else if (hit.collider.transform.name == "CapZone2")
+                    return 0;
+                }
+                else if (hit.collider.transform.name == "CapZone2" && (int)E_BOMBCOLORFORPANEL.green == (int)bombBase.enemyColor)
+                {
                     catchPosValue = 1;
-                else if (hit.collider.transform.name == "CapZone3")
+                    return 0;
+                }
+                else if (hit.collider.transform.name == "CapZone3" && (int)E_BOMBCOLORFORPANEL.yellow == (int)bombBase.enemyColor)
+                {
                     catchPosValue = 2;
-                else if (hit.collider.transform.name == "CapZone4")
+                    return 0;
+                }
+                else if (hit.collider.transform.name == "CapZone4" && (int)E_BOMBCOLORFORPANEL.red == (int)bombBase.enemyColor)
+                {
                     catchPosValue = 3;
-
-                return true;
+                    return 0;
+                }
+                //キャッチゾーンに来たけど色とパネルの色があってなかった→爆発
+                return 2;
             }
         }
-        return false;
+        return 1;
+    }
+
+    Vector3 AlmightyTapPosition()
+    {
+        Vector3 vPoint = _touchManager._touch_position;
+        return Application.isEditor ? Input.mousePosition : vPoint;
+    }
+
+    void TouchManagerUpdate()
+    {
+        _touchManager.update();
+        _touchManager.GetTouch();
     }
 
     bool isCatchBomb()
     {
         return (bombAnimator.GetBool("Catch"));
     }
-
-    //void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.transform.tag == "CatchZone" && !isAnimated)
-    //    {
-    //        isAnimated = true;
-    //        bombAnimator.SetBool("CatchAnim", true);
-    //        SetState(ANIMATIONSTATE.StartAnime);
-    //        rigidbody.isKinematic = true;
-
-    //        if (collision.transform.name == "CapZone1")
-    //            catchPosValue = 0;
-    //        else if (collision.transform.name == "CapZone2")
-    //            catchPosValue = 1;
-    //        else if (collision.transform.name == "CapZone3")
-    //            catchPosValue = 2;
-    //        else if (collision.transform.name == "CapZone4")
-    //            catchPosValue = 3;
-    //    }
-    //}
 }
