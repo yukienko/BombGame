@@ -22,6 +22,7 @@ public class BombAnimation : MonoBehaviour
     private const float intervalSubRadius = 0.01f;
     private float radius;
 
+    private bool isCatchZone;
     private float timeAnimeElapsed;
     private int catchPosValue;
 
@@ -80,6 +81,7 @@ public class BombAnimation : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         radius = 2.0f;
         rigidbody.isKinematic = false;
+        isCatchZone = false;
     }
 
     private void SetState(E_ANIMATIONSTATE state)
@@ -112,7 +114,7 @@ public class BombAnimation : MonoBehaviour
         switch (animationState)
         {
             case E_ANIMATIONSTATE.None:
-                if (!isCatchBomb())
+                if (!isAnimated)
                 {
                     int hoge = CatchZoneDecision();
                     if (hoge == 0)
@@ -127,8 +129,8 @@ public class BombAnimation : MonoBehaviour
                     else if(hoge == 2)
                     {
                         //爆発
-                        Debug.Log("爆発☆");
                         SetState(E_ANIMATIONSTATE.BombAnime);
+                        bombAnimator.SetBool("Explosion", true);
                     }
                 }
                 break;
@@ -195,38 +197,45 @@ public class BombAnimation : MonoBehaviour
     int CatchZoneDecision()
     {
         float distance = 100; // 飛ばす&表示するRayの長さ
-        Ray ray = Camera.main.ScreenPointToRay(AlmightyTapPosition());
-        RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(ray, out hit, distance))
-        {
-            if (hit.collider.tag == "CatchZone" && !isAnimated)
-            {
-                isAnimated = true;
-                bombAnimator.SetBool("CatchAnim", true);
-                rigidbody.isKinematic = true;
+        float duration = 3;   // 表示期間（秒）
 
-                if (hit.collider.transform.name == "CapZone1" && (int)E_BOMBCOLORFORPANEL.blue == (int)bombBase.enemyColor)
+        Ray ray = new Ray(transform.position, new Vector3(0, 0, 10));
+        Debug.DrawRay(ray.origin, ray.direction * distance, Color.red, duration, false);
+
+        if (!bombAnimator.GetBool("Catch"))
+        {
+            RaycastHit hit = new RaycastHit();
+            if (Physics.Raycast(ray, out hit, distance))
+            {
+                if (hit.collider.tag == "CatchZone" && !isAnimated)
                 {
-                    catchPosValue = 0;
-                    return 0;
+                    isAnimated = true;
+                    bombAnimator.SetBool("CatchAnim", true);
+                    rigidbody.isKinematic = true;
+
+                    if (hit.collider.transform.name == "CapZone1" && (int)E_BOMBCOLORFORPANEL.blue == (int)bombBase.enemyColor)
+                    {
+                        catchPosValue = 0;
+                        return 0;
+                    }
+                    else if (hit.collider.transform.name == "CapZone2" && (int)E_BOMBCOLORFORPANEL.green == (int)bombBase.enemyColor)
+                    {
+                        catchPosValue = 1;
+                        return 0;
+                    }
+                    else if (hit.collider.transform.name == "CapZone3" && (int)E_BOMBCOLORFORPANEL.yellow == (int)bombBase.enemyColor)
+                    {
+                        catchPosValue = 2;
+                        return 0;
+                    }
+                    else if (hit.collider.transform.name == "CapZone4" && (int)E_BOMBCOLORFORPANEL.red == (int)bombBase.enemyColor)
+                    {
+                        catchPosValue = 3;
+                        return 0;
+                    }
+                    //キャッチゾーンに来たけど色とパネルの色があってなかった→爆発
+                    return 2;
                 }
-                else if (hit.collider.transform.name == "CapZone2" && (int)E_BOMBCOLORFORPANEL.green == (int)bombBase.enemyColor)
-                {
-                    catchPosValue = 1;
-                    return 0;
-                }
-                else if (hit.collider.transform.name == "CapZone3" && (int)E_BOMBCOLORFORPANEL.yellow == (int)bombBase.enemyColor)
-                {
-                    catchPosValue = 2;
-                    return 0;
-                }
-                else if (hit.collider.transform.name == "CapZone4" && (int)E_BOMBCOLORFORPANEL.red == (int)bombBase.enemyColor)
-                {
-                    catchPosValue = 3;
-                    return 0;
-                }
-                //キャッチゾーンに来たけど色とパネルの色があってなかった→爆発
-                return 2;
             }
         }
         return 1;
