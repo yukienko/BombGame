@@ -9,7 +9,11 @@ public class AllDeletItem : ItemBase
     protected override ItemState.ITEMSTATE itemState
     {
         get => ItemState.AllDeleteItemState;
-        set => ItemState.AllDeleteItemState = value;
+        set
+        {
+            ItemState.AllDeleteItemState = value;
+            EventManager.TriggerEvent(EventManager.Events.AllDeleteItem);
+        }
     }
 
     private void Awake()

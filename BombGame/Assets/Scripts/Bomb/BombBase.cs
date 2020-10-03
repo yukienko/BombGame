@@ -27,13 +27,11 @@ public class BombBase : MonoBehaviour
     private void Start()
     {
         Init();
+        InitItem();
     }
 
     private void Update()
     {
-        CheckUsedStopTimeItem();
-        CheckUsedAllDeleteItem();
-
         //CheckCatchedBomb();
     }
 
@@ -46,6 +44,14 @@ public class BombBase : MonoBehaviour
 
         animator = GetComponent<Animator>();
         animator.SetInteger("Color", (int)enemyColor);
+    }
+
+    private void InitItem()
+    {
+        CheckUsedStopTimeItem();
+        CheckUsedAllDeleteItem();
+        EventManager.StartListening(EventManager.Events.StopTimeItem, CheckUsedStopTimeItem);
+        EventManager.StartListening(EventManager.Events.AllDeleteItem, CheckUsedAllDeleteItem);
     }
 
     public void Catch(bool isMove)

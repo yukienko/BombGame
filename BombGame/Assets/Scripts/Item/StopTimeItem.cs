@@ -9,7 +9,11 @@ public class StopTimeItem : ItemBase
     protected override ItemState.ITEMSTATE itemState
     {
         get => ItemState.StopTimeItemState;
-        set => ItemState.StopTimeItemState = value;
+        set
+        {
+            ItemState.StopTimeItemState = value;
+            EventManager.TriggerEvent(EventManager.Events.StopTimeItem);
+        }
     }
 
     private void Awake()

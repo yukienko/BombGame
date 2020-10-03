@@ -5,11 +5,12 @@ using UnityEngine;
 
 public abstract class Singleton<T> where T: class, new()
 {
+    private static T instance = new T();
     public static T Instance
     {
         get
         {
-            return new T();
+            return instance;
         }
     }
 }
