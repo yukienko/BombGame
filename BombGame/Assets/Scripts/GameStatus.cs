@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameStatus : Singleton<GameStatus>
 {
-    public enum GANEPHASE
+    public enum GAMEPHASE
     {
         Wait,
         Start,
@@ -12,4 +12,6 @@ public class GameStatus : Singleton<GameStatus>
         GameOver,
         Result,
     }
+
+    public GAMEPHASE GamePhase { get; set; } = default;
 }
