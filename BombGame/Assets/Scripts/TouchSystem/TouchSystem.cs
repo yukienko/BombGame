@@ -108,9 +108,11 @@ public class TouchSystem : MonoBehaviour
     void TouchPhaseEnded()
     {
         isMove = false;
-        bombBase.gameObject.GetComponent<Rigidbody>().isKinematic = false;
         if (bombBase != default)
+        {
+            bombBase.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             BombAnimationChatch();
+        }
         bombBase = default;
     }
 
