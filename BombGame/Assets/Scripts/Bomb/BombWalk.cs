@@ -49,8 +49,8 @@ public class BombWalk : MonoBehaviour
 
     void MoveUpdate()
     {
-        //つかまれていないとき
-        if (!isCatchBomb() && !isAnimeBomb())
+        //つかまれていないとき、アニメーションをしてないとき、爆発してないとき
+        if (!isCatchBomb() && !isAnimeBomb() && !isExplosion())
         {
             //歩く処理(常に一定のスピードで向いているベクトルに進み続ける)
             transform.Translate(bombWalkVector * revisionBombWalkSpeedValue * Time.deltaTime);
@@ -117,5 +117,9 @@ public class BombWalk : MonoBehaviour
     bool isAnimeBomb()
     {
         return (bombAnimator.GetBool("CatchAnim"));
+    }
+    bool isExplosion()
+    {
+        return (bombAnimator.GetBool("Explosion"));
     }
 }
