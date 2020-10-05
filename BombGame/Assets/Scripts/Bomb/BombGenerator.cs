@@ -13,6 +13,7 @@ public class BombGenerator : MonoBehaviour
     static Vector3 center = new Vector3(0, -0.5f, 0);
     private const float widthY = 3.5f;
     private const float widthX = 6.0f;
+    public bool isExplosion;
     //番号振り分け
     //UIUIUIUIUIUIUIUIUIUIUIUIUIUI
     //UI                        UI
@@ -39,6 +40,13 @@ public class BombGenerator : MonoBehaviour
 
     private void Awake()
     {
+        init();
+    }
+
+    private void init()
+    {
+        isExplosion = false;
+        ReleaseListBombs();
         GenerateEnemy();
     }
 
@@ -51,6 +59,8 @@ public class BombGenerator : MonoBehaviour
             SpawnEnemy();
             time = 0;
         }
+
+        CheckExplosion();
     }
 
     //初期生成
@@ -71,5 +81,23 @@ public class BombGenerator : MonoBehaviour
         var rand = ConvenientAssets.RandomInt(0, GeneratePosVolume);
         BombsList[activeEnemyCount].gameObject.transform.position = RandSpawnPos[rand];
         activeEnemyCount++;
+    }
+
+    //ボムのリリース
+    private void ReleaseListBombs()
+    {
+        BombsList.RemoveAll(BombsList.Contains);
+        BombsList.Clear();
+    }
+
+    private void CheckExplosion()
+    {
+        if (isExplosion)
+        {
+            foreach(Transform anim in bombParent.transform)
+            {
+                anim.gameObject.GetComponent<Animator>().SetBool("Explosion", true);
+            }
+        }
     }
 }
