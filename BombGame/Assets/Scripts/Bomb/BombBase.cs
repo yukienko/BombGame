@@ -48,10 +48,10 @@ public class BombBase : MonoBehaviour
 
     private void InitItem()
     {
-        CheckUsedStopTimeItem();
-        CheckUsedAllDeleteItem();
-        EventManager.StartListening(EventManager.Events.StopTimeItem, CheckUsedStopTimeItem);
-        EventManager.StartListening(EventManager.Events.AllDeleteItem, CheckUsedAllDeleteItem);
+        CheckUsingStopTimeItem();
+        CheckUsingAllDeleteItem();
+        EventManager.StartListening(EventManager.Events.StopTimeItem, CheckUsingStopTimeItem);
+        EventManager.StartListening(EventManager.Events.AllDeleteItem, CheckUsingAllDeleteItem);
     }
 
     public void Catch(bool isMove)
@@ -59,9 +59,9 @@ public class BombBase : MonoBehaviour
         animator.SetBool("Catch", isMove);
     }
 
-    private void CheckUsedStopTimeItem()
+    private void CheckUsingStopTimeItem()
     {
-        if (ItemState.StopTimeItemState == ItemState.ITEMSTATE.isUse)
+        if (StopTimeItem.Instance.IsUsingItem())
         {
             animator.speed = 0f;
         }
@@ -71,9 +71,9 @@ public class BombBase : MonoBehaviour
         }
     }
 
-    private void CheckUsedAllDeleteItem()
+    private void CheckUsingAllDeleteItem()
     {
-        if (ItemState.AllDeleteItemState == ItemState.ITEMSTATE.isUse)
+        if (AllDeletItem.Instance.IsUsingItem())
         {
             Destroy(gameObject);
         }

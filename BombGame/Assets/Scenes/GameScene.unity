@@ -2206,7 +2206,6 @@ GameObject:
   - component: {fileID: 919028844}
   - component: {fileID: 919028843}
   - component: {fileID: 919028842}
-  - component: {fileID: 919028841}
   m_Layer: 5
   m_Name: StopItemButton
   m_TagString: Untagged
@@ -2234,18 +2233,6 @@ RectTransform:
   m_AnchoredPosition: {x: -3, y: -198}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &919028841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919028839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f23171e56792ec74fae3dc4cfa3077d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &919028842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2289,7 +2276,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 919028841}
+      - m_Target: {fileID: 0}
         m_MethodName: UseItem
         m_Mode: 1
         m_Arguments:
@@ -2442,7 +2429,6 @@ GameObject:
   - component: {fileID: 988202031}
   - component: {fileID: 988202030}
   - component: {fileID: 988202029}
-  - component: {fileID: 988202028}
   m_Layer: 5
   m_Name: DeleteItemButton
   m_TagString: Untagged
@@ -2470,18 +2456,6 @@ RectTransform:
   m_AnchoredPosition: {x: -3, y: -155.8}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &988202028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 988202026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bfe38e2c6e1b62449f5625af18c4707, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &988202029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2525,7 +2499,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 988202028}
+      - m_Target: {fileID: 0}
         m_MethodName: UseItem
         m_Mode: 1
         m_Arguments:
@@ -2666,6 +2640,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1060776539}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1101526389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1101526391}
+  - component: {fileID: 1101526390}
+  m_Layer: 0
+  m_Name: ItemController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1101526390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101526389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1528af7ce944624b9447a65794cde03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StopItemButton: {fileID: 919028842}
+  DeleteItemButton: {fileID: 988202029}
+--- !u!4 &1101526391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101526389}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1136136600
 GameObject:
   m_ObjectHideFlags: 0

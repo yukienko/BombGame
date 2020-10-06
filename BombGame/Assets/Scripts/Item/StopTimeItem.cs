@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StopTimeItem : ItemBase
+public class StopTimeItem : ItemBase<StopTimeItem>
 {
     private const float StopTimeCount = 5.0f;
-
-    protected override ItemState.ITEMSTATE itemState
-    {
-        get => ItemState.StopTimeItemState;
-        set
-        {
-            ItemState.StopTimeItemState = value;
-            EventManager.TriggerEvent(EventManager.Events.StopTimeItem);
-        }
+    protected override float ItemUsingTime 
+    { 
+        get => StopTimeCount;
+        set => ItemUsingTime = value;
     }
 
-    private void Awake()
+    protected override ITEMSTATE ItemState
     {
-        base.itemUsingTime = StopTimeCount;
+        get => base.ItemState;
+        set
+        {
+            base.ItemState = value;
+            EventManager.TriggerEvent(EventManager.Events.StopTimeItem);
+        }
     }
 }
