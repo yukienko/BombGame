@@ -118,18 +118,18 @@ public class BombAnimation : MonoBehaviour
             case E_ANIMATIONSTATE.None:
                 if (!isAnimated)
                 {
-                    int hoge = CatchZoneDecision();
-                    if (hoge == 0)
+                    int catchResult = CatchZoneDecision();
+                    if (catchResult == 0)
                     {
                         bombAnimator.SetBool("isCatched", true);
                         //ボムとパネルの色があってるのでアニメーションに移る
                         SetState(E_ANIMATIONSTATE.StartAnime);
                     }
-                    else if(hoge == 1)
+                    else if(catchResult == 1)
                     {
                         //なんもなし
                     }
-                    else if(hoge == 2)
+                    else if(catchResult == 2)
                     {
                         //爆発
                         Explosion();
