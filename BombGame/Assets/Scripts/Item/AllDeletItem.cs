@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AllDeletItem : ItemBase
+public class AllDeletItem : ItemBase<AllDeletItem>
 {
     private const float AllDeleteTime = 1.0f;
-
-    protected override ItemState.ITEMSTATE itemState
+    protected override float ItemUsingTime
     {
-        get => ItemState.AllDeleteItemState;
-        set
-        {
-            ItemState.AllDeleteItemState = value;
-            EventManager.TriggerEvent(EventManager.Events.AllDeleteItem);
-        }
+        get => AllDeleteTime;
+        set => ItemUsingTime = value;
     }
 
-    private void Awake()
+    protected override ITEMSTATE ItemState
     {
-        base.itemUsingTime = AllDeleteTime;
+        get => base.ItemState;
+        set
+        {
+            base.ItemState = value;
+            EventManager.TriggerEvent(EventManager.Events.AllDeleteItem);
+        }
     }
 }

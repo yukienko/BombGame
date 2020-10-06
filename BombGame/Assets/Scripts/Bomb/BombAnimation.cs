@@ -132,9 +132,7 @@ public class BombAnimation : MonoBehaviour
                     else if(hoge == 2)
                     {
                         //爆発
-                        SetState(E_ANIMATIONSTATE.BombAnime);
-                        bombAnimator.SetBool("Explosion", true);
-                        bombGenerator.isExplosion = true;
+                        Explosion();
                     }
                 }
                 break;
@@ -154,6 +152,22 @@ public class BombAnimation : MonoBehaviour
 
                 SetState(E_ANIMATIONSTATE.None);
                 break;
+        }
+    }
+
+    private void Explosion()
+    {
+        SetState(E_ANIMATIONSTATE.BombAnime);
+        bombAnimator.SetBool("Explosion", true);
+        bombGenerator.isExplosion = true;
+
+        if (BarrierItem.Instance.CanUsingItem())
+        {
+            BarrierItem.Instance.UseItem();
+        }
+        else
+        {
+            GameStatus.Instance.GamePhase = GameStatus.GAMEPHASE.GameOver;
         }
     }
 

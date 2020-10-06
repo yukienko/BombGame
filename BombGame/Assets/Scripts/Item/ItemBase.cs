@@ -1,38 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
-public class ItemBase : MonoBehaviour
+public class ItemBase<t> : Singleton<t> where t : class, new()
 {
-    public Item itemName { get; set; }
-    public enum Item
+    public enum ITEMSTATE
     {
-        stopTime,
-        barrier,
-        decreaseEnemyLimit,
-        allDelete
+        CanUse,
+        UnUsed,
+        Using,
+        Finish,
     }
+    protected virtual ITEMSTATE ItemState { get; set; }
+    protected virtual float ItemUsingTime { get; set; } = 0;
 
-    protected virtual ItemState.ITEMSTATE itemState { get; set; }
-    protected virtual float itemUsingTime { get; set; } = 0;
-
-
-    private void Start()
+    public void Init()
     {
-        itemState = ItemState.ITEMSTATE.canUse; //テスト用：アイテム使用可能状態に変更
-        Init();
-    }
+        ItemState = ITEMSTATE.CanUse; //テスト用：アイテム使用可能状態に変更
 
-    private void Update()
-    {
-        
-    }
-
-    protected void Init()
-    {
-        if (itemState == ItemState.ITEMSTATE.canUse)
+        if (ItemState == ITEMSTATE.CanUse)
         {
-            itemState = ItemState.ITEMSTATE.unUsed;
+            ItemState = ITEMSTATE.UnUsed;
         }
         else
         {
@@ -42,15 +31,25 @@ public class ItemBase : MonoBehaviour
 
     public virtual void UseItem()
     {
-        if (itemState == ItemState.ITEMSTATE.unUsed)
+        if (ItemState == ITEMSTATE.UnUsed)
         {
-            itemState = ItemState.ITEMSTATE.isUse;
-            Invoke("Finish", itemUsingTime);
+            ItemState = ITEMSTATE.Using;
+            DOVirtual.DelayedCall(ItemUsingTime, Finish);
         }
     }
 
     public virtual void Finish()
     {
-        itemState = ItemState.ITEMSTATE.finish;
+        ItemState = ITEMSTATE.Finish;
+    }
+
+    public bool CanUsingItem()
+    {
+        return ItemState == ITEMSTATE.CanUse;
+    }
+
+    public bool IsUsingItem()
+    {
+        return ItemState == ITEMSTATE.Using;
     }
 }
