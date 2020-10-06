@@ -9,6 +9,7 @@ using StaticManager;
 public class BombAnimation : MonoBehaviour
 {
     BombBase bombBase;
+    BombGenerator bombGenerator;
 
     private new Rigidbody rigidbody = default;      //つかんで離したときに壁に埋まるのを防止
     private Animator bombAnimator = default;
@@ -76,6 +77,7 @@ public class BombAnimation : MonoBehaviour
 
     private void Init()
     {
+        bombGenerator = GameObject.Find("BombGenerator").GetComponent<BombGenerator>();
         bombBase = GetComponent<BombBase>();
         bombAnimator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
@@ -119,6 +121,7 @@ public class BombAnimation : MonoBehaviour
                     int hoge = CatchZoneDecision();
                     if (hoge == 0)
                     {
+                        bombAnimator.SetBool("isCatched", true);
                         //ボムとパネルの色があってるのでアニメーションに移る
                         SetState(E_ANIMATIONSTATE.StartAnime);
                     }
@@ -156,6 +159,7 @@ public class BombAnimation : MonoBehaviour
     {
         SetState(E_ANIMATIONSTATE.BombAnime);
         bombAnimator.SetBool("Explosion", true);
+        bombGenerator.isExplosion = true;
 
         if (BarrierItem.Instance.CanUsingItem())
         {

@@ -76,7 +76,7 @@ public class TouchSystem : MonoBehaviour
             //ボムをつかんだ
             if (Physics.Raycast(ray, out hit, distance))
             {
-                if (hit.collider.tag == "EnemyBomb")
+                if (hit.collider.tag == "EnemyBomb" && !hit.collider.gameObject.GetComponent<Animator>().GetBool("isCatched") && !hit.collider.gameObject.GetComponent<Animator>().GetBool("Explosion"))
                 {
                     isMove = true;
                     bombBase = hit.collider.gameObject.GetComponent<BombBase>();
@@ -101,7 +101,6 @@ public class TouchSystem : MonoBehaviour
             pos = _camera.ScreenToWorldPoint(fixPos + _camera.transform.forward * 10);
             bombBase.transform.position = pos;
             bombBase.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            //Debug.Log(Input.mousePosition + "," + pos + "," + _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10));
         }
     }
 
@@ -110,6 +109,20 @@ public class TouchSystem : MonoBehaviour
         isMove = false;
         if (bombBase != default)
         {
+            pos = _camera.ScreenToWorldPoint(AlmightyTapPosition() + _camera.transform.forward * 10);
+            Vector3 fixPos = AlmightyTapPosition();
+            if (CheckUIRect(0) == 1)
+                fixPos.x = EachPixel(1) + EachPixel(5);
+            else if (CheckUIRect(0) == 2)
+                fixPos.x = EachPixel(2) - EachPixel(5);
+            if (CheckUIRect(1) == 3)
+                fixPos.y = EachPixel(3) + EachPixel(6);
+            else if (CheckUIRect(1) == 4)
+                fixPos.y = EachPixel(4) - EachPixel(6);
+            fixPos.z = 0;
+            pos = _camera.ScreenToWorldPoint(fixPos + _camera.transform.forward * 10);
+            bombBase.transform.position = pos;
+
             bombBase.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             BombAnimationChatch();
         }
