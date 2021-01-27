@@ -8,7 +8,7 @@ public class EventManager :Singleton<EventManager>
     public enum Events
     {
         StopTimeItem,
-        AllDeleteItem,
+        SelectColorMoveItem,
         GameOver,
     }
 

@@ -49,9 +49,9 @@ public class BombBase : MonoBehaviour
     private void InitItem()
     {
         CheckUsingStopTimeItem();
-        CheckUsingAllDeleteItem();
+        CheckUsingSelectColorMoveItem();
         EventManager.StartListening(EventManager.Events.StopTimeItem, CheckUsingStopTimeItem);
-        EventManager.StartListening(EventManager.Events.AllDeleteItem, CheckUsingAllDeleteItem);
+        EventManager.StartListening(EventManager.Events.SelectColorMoveItem, CheckUsingSelectColorMoveItem);
     }
 
     public void Catch(bool isMove)
@@ -71,9 +71,14 @@ public class BombBase : MonoBehaviour
         }
     }
 
-    private void CheckUsingAllDeleteItem()
+    private void CheckUsingSelectColorMoveItem()
     {
-        if (AllDeletItem.Instance.IsUsingItem())
+        if (!SelectColorMoveItem.Instance.IsUsingItem())
+        {
+            return;
+        }
+
+        if (SelectColorMoveItem.Instance.IsUsingSelectColorItem(enemyColor))
         {
             Destroy(gameObject);
         }
