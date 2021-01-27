@@ -9,6 +9,7 @@ public class EventManager :Singleton<EventManager>
     {
         StopTimeItem,
         AllDeleteItem,
+        GameOver,
     }
 
     private Dictionary<Events, UnityEvent> eventDictionary = new Dictionary<Events, UnityEvent>();

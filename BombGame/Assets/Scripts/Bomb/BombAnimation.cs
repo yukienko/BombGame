@@ -167,7 +167,7 @@ public class BombAnimation : MonoBehaviour
         }
         else
         {
-            GameStatus.Instance.GamePhase = GameStatus.GAMEPHASE.GameOver;
+            EventManager.TriggerEvent(EventManager.Events.GameOver);
         }
     }
 

@@ -13,5 +13,9 @@ public class GameStatus : Singleton<GameStatus>
         Result,
     }
 
-    public GAMEPHASE GamePhase { get; set; } = default;
+    private GAMEPHASE _gamePhase;
+    public GAMEPHASE GamePhase { 
+        get { return _gamePhase; } 
+        set { _gamePhase = value; Debug.Log("GamePhase:" + _gamePhase); } 
+    }
 }
