@@ -39,7 +39,7 @@ public class ItemController : MonoBehaviour
 
     private void UseSelectColorMoveItem(BombBase.ENEMYCOLOR _selectColor)
     {
-        if(!SelectColorMoveItem.Instance.IsUnUsedItem())
+        if(!SelectColorMoveItem.Instance.CanUsingItem())
         {
             return;
         }

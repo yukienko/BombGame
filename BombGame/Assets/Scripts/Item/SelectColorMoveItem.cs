@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectColorMoveItem : ItemBase<SelectColorMoveItem>
+public class SelectColorMoveItem : ActiveItemBase<SelectColorMoveItem>
 {
     private const float SelectColorMoveTime = 1.0f;
     protected override float ItemUsingTime

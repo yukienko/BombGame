@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StopTimeItem : ItemBase<StopTimeItem>
+public class StopTimeItem : ActiveItemBase<StopTimeItem>
 {
     private const float StopTimeCount = 5.0f;
     protected override float ItemUsingTime 

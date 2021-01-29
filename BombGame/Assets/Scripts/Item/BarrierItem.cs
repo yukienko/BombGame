@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrierItem : ItemBase<BarrierItem>
+public class BarrierItem : ActiveItemBase<BarrierItem>
 {
 
 }
