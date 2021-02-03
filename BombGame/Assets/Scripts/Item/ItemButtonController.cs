@@ -1,0 +1,65 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ItemButtonController : MonoBehaviour
+{
+    // 時間停止
+    [SerializeField] Button StopItemButton = default;
+    // 選択した色を除去
+    [SerializeField] Button MoveItemButton = default;
+
+    [SerializeField] SelectColorItemController SelectColorItemControllerPanel = default;
+
+    private void Start()
+    {
+        if (StopItemButton) StopItemButton.onClick.AddListener(UseStopItem);
+        if (MoveItemButton) MoveItemButton.onClick.AddListener(SetUpSelectColorMoveItem);
+
+        InitItems();
+    }
+
+    private void InitItems()
+    {
+        StopTimeItem.Instance.Init();
+        SelectColorMoveItem.Instance.Init();
+        BarrierItem.Instance.Init();
+        SelectColorGenerateItem.Instance.Init();
+    }
+
+    private void UseStopItem()
+    {
+        StopTimeItem.Instance.UseItem();
+    }
+
+    private void SetUpSelectColorMoveItem()
+    {
+        if (!SelectColorMoveItem.Instance.CanUsingItem())
+        {
+            return;
+        }
+        SetItemPanel(true, UseSelectColorMoveItem);
+    }
+
+    private void UseSelectColorMoveItem(BombBase.ENEMYCOLOR _selectColor)
+    {
+        SelectColorMoveItem.Instance.SetSelectColorNumber(_selectColor);
+        SelectColorMoveItem.Instance.UseItem();
+        Debug.Log("UseMoveItem : "+_selectColor);
+        SetItemPanel(false, UseSelectColorMoveItem);
+    }
+
+    private void SetItemPanel(bool active, System.Action<BombBase.ENEMYCOLOR> itemAction)
+    {
+        SelectColorItemControllerPanel.gameObject.SetActive(active);
+        if (active)
+        {
+            SelectColorItemControllerPanel.UseItemAction += itemAction;
+        }
+        else
+        {
+            SelectColorItemControllerPanel.UseItemAction -= itemAction;
+        }
+    }
+}
