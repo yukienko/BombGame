@@ -9,6 +9,7 @@ public class EventManager :Singleton<EventManager>
     {
         StopTimeItem,
         SelectColorMoveItem,
+        SelectColorGenerateItem,
         GameOver,
     }
 
