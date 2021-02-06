@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectColorGenerateItem : ActiveItemBase<SelectColorGenerateItem>
+public class ResultPanel : DisplayPanel
 {
 
 }
